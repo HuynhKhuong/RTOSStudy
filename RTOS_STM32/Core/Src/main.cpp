@@ -22,7 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "FreeRTOS.h"
+#include "task.hpp"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,7 +48,7 @@ I2S_HandleTypeDef hi2s3;
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-
+static BaseType_t taskCreationResult{pdPASS};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -60,7 +60,6 @@ static void MX_SPI1_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -76,7 +75,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -100,10 +98,15 @@ int main(void)
   MX_I2C1_Init();
   MX_I2S3_Init();
   MX_SPI1_Init();
-  MX_USB_HOST_Init();
+  //MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
 
+  taskCreationResult = Task::createTasks();
+
+  vTaskStartScheduler();
   /* USER CODE END 2 */
+
+  ///PC returned to main, scheduler start is failed
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -365,7 +368,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
 /* USER CODE END 4 */
 
 /**
