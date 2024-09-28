@@ -75,7 +75,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -99,11 +98,11 @@ int main(void)
   MX_I2C1_Init();
   MX_I2S3_Init();
   MX_SPI1_Init();
-  MX_USB_HOST_Init();
+  //MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
 
   taskCreationResult = Task::createTasks();
-  configASSERT(taskCreationResult == pdPASS); 
+
   vTaskStartScheduler();
   /* USER CODE END 2 */
 
@@ -369,8 +368,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-BaseType_t createTasks(void);
-
 /* USER CODE END 4 */
 
 /**
