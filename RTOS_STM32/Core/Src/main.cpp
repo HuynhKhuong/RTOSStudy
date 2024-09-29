@@ -100,6 +100,9 @@ int main(void)
   MX_SPI1_Init();
   //MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
+  //Enabel Cycle Counter of CPU for timestamp trackign
+  DWT_Type * const cortexM4DWTReg = DWT;
+  cortexM4DWTReg->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
   taskCreationResult = Task::createTasks();
 

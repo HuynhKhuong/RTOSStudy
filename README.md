@@ -33,3 +33,6 @@ with equal priorities --> print msg "Hello world from task-x"
 - **NOTE**: Patch is obsolete, needs manual update. 
 
 - Remember to update MCU Core, RTT buffer size, app name and MCU name
+- SEGGER will use CYCLE_COUNTER of CPU as a source of timestamp to display to user -> remember to update this   
+- DWT_CYCCNT register stores the number of clock cycles happended after the CPU reset 
+--> how to enable: Cortex-M4 user manual
