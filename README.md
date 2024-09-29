@@ -31,3 +31,5 @@ with equal priorities --> print msg "Hello world from task-x"
 - from FreeRTOS 11 there's no need to apply patch
 
 - **NOTE**: Patch is obsolete, needs manual update. 
+
+- Remember to update MCU Core, RTT buffer size, app name and MCU name
