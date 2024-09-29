@@ -29,3 +29,5 @@ with equal priorities --> print msg "Hello world from task-x"
 ### TRACE TOOL INTEGRATE
 - Get source files from FreeRTOS 10.4 version (in samples)
 - from FreeRTOS 11 there's no need to apply patch
+
+- **NOTE**: Patch is obsolete, needs manual update. 
