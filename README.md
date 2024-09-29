@@ -20,9 +20,12 @@ Task-1
 Task-2
 with equal priorities --> print msg "Hello world from task-x"
 - PRIORITY = 4 bit for pre-emption --> 5 = MAX for system Exception from FreeRTOS
-- > 5 for others
+- "> 5 for others"
 - configUSE_PREEMPTION for PREEMPTION Scheduler config
 - TaskYeild -> force (active) to (ready)
 - task Suspend  -> force (all states) to suspend
 - taskDelay -> force to block state
 
+### TRACE TOOL INTEGRATE
+- Get source files from FreeRTOS 10.4 version (in samples)
+- from FreeRTOS 11 there's no need to apply patch
