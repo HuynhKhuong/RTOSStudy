@@ -36,3 +36,5 @@ with equal priorities --> print msg "Hello world from task-x"
 - SEGGER will use CYCLE_COUNTER of CPU as a source of timestamp to display to user -> remember to update this   
 - DWT_CYCCNT register stores the number of clock cycles happended after the CPU reset 
 --> how to enable: Cortex-M4 user manual
+--> get _SEGGER_RTT buffer --> pu1 & Write offset and save raw binary files 
+--> import to tool for use
