@@ -7,21 +7,21 @@ namespace Task
   
   static void task1Run(void* param)
   {
-    uint32_t tickTime_u32{100}; //100 tick rate = 100ms
+    //uint32_t tickTime_u32{100}; //100 tick rate = 100ms
     while(1)
     {
       printf("Hello from task %d \n", 1U); 
-      vTaskDelay(tickTime_u32);
+      //vTaskDelay(tickTime_u32);
     }
   }
 
   static void task2Run(void* param)
   {
-    uint32_t tickTime_u32{100};
+    //uint32_t tickTime_u32{100};
     while(1)
     {
       printf("Hello from task %d \n", 2U); 
-      vTaskDelay(tickTime_u32);
+      //vTaskDelay(tickTime_u32);
     }
   }
 
