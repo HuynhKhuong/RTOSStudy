@@ -38,3 +38,7 @@ with equal priorities --> print msg "Hello world from task-x"
 --> how to enable: Cortex-M4 user manual
 --> get _SEGGER_RTT buffer --> pu1 & Write offset and save raw binary files 
 --> import to tool for use
+
+SEGGER offers an API SEGGER_SYSVIEW_PrintfTarget() to record printf calls from target
+note: SEGGER_SYSVIEW_PrintfTarget must take formatted string
+You can make use of snprintf to format for your string before hand
