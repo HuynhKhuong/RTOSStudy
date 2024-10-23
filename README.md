@@ -26,3 +26,22 @@ with equal priorities --> print msg "Hello world from task-x"
 - task Suspend  -> force (all states) to suspend
 - taskDelay -> force to block state
 
+### TRACE TOOL INTEGRATE
+- Get source files from FreeRTOS 10.4 version (in samples)
+- from FreeRTOS 11 there's no need to apply patch
+
+- **NOTE**: Patch is obsolete, needs manual update. 
+
+- Remember to update MCU Core, RTT buffer size, app name and MCU name
+- SEGGER will use CYCLE_COUNTER of CPU as a source of timestamp to display to user -> remember to update this   
+- DWT_CYCCNT register stores the number of clock cycles happended after the CPU reset 
+--> how to enable: Cortex-M4 user manual
+--> get _SEGGER_RTT buffer --> pu1 & Write offset and save raw binary files 
+--> import to tool for use
+
+SEGGER offers an API SEGGER_SYSVIEW_PrintfTarget() to record printf calls from target
+note: SEGGER_SYSVIEW_PrintfTarget must take formatted string
+You can make use of snprintf to format for your string before hand
+
+### EXERCISE 
+![Exercise 2: Blink LED](.\resource\exercise_2.jpg)
