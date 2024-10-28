@@ -44,4 +44,4 @@ note: SEGGER_SYSVIEW_PrintfTarget must take formatted string
 You can make use of snprintf to format for your string before hand
 
 ### EXERCISE 
-![Exercise 2: Blink LED](.\resource\exercise_2.jpg)
+![Exercise 2: Blink LED](./resource/exercise_2.jpg)
