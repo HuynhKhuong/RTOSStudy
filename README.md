@@ -45,3 +45,10 @@ You can make use of snprintf to format for your string before hand
 
 ### EXERCISE 
 ![Exercise 2: Blink LED](./resource/exercise_2.jpg)
+remember to add new source files configuration for SW build in STM32CubeIDE
+RTOS_STM32/bg/Inc/task1.hpp 
+RTOS_STM32/bg/Inc/task2.hpp 
+RTOS_STM32/bg/Inc/task3.hpp 
+RTOS_STM32/bg/Src/task1.cpp 
+RTOS_STM32/bg/Src/task2.cpp 
+RTOS_STM32/bg/Src/task3.cpp 
