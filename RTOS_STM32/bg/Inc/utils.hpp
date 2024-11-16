@@ -3,9 +3,10 @@
 
 extern "C"
 {
+  #include <stdio.h>
   #include "FreeRTOS.h"
   #include "task.h"
-  #include <stdio.h>
+  #include "stm32f4xx_hal.h"
 }
 
 

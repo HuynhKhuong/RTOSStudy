@@ -1,0 +1,25 @@
+#include "task3.hpp"
+
+namespace Task
+{
+  Task3Handler task3{};  //to define task3 here
+
+  void Task3Handler::task3Run(void* param)
+  {
+    while(1)
+    {
+      //User code to do here
+      task3.m_LEDHandler.blinkLED();
+      vTaskDelay(task3.m_taskCycle_ms); 
+    }
+  }
+
+  void Task3Handler::run(void* param) 
+  {
+    while(1)
+    {
+      //User code to do here
+      //Obsolete, will allocate it for later use
+    }
+  }
+}//End of namespace Task
