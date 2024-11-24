@@ -8,9 +8,9 @@ namespace Task
   {
     while(1)
     {
-      vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
       //User code to do here
       task2.m_LEDHandler.blinkLED();
+      vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
     }
   }
 
