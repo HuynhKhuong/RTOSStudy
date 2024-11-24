@@ -6,11 +6,13 @@ namespace Task
 
   void Task1Handler::task1Run(void* param)
   {
+    task1.m_currentWakeTimeTick = xTaskGetTickCount();
+
     while(1)
     {
+      vTaskDelayUntil(&task1.m_currentWakeTimeTick, task1.m_taskCycleTick);
       //User code to do here
       task1.m_LEDHandler.blinkLED();
-      vTaskDelay(task1.m_taskCycle_ms); 
     }
   }
 
@@ -19,6 +21,7 @@ namespace Task
     while(1)
     {
       //User code to do here
+      //Obsolete, will allocate it for later use
     }
   }
 

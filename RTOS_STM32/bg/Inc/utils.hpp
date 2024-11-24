@@ -10,4 +10,9 @@ extern "C"
 }
 
 
+constexpr TickType_t convertTickFromMs(uint32_t miliSec)
+{
+  return miliSec/portTICK_PERIOD_MS;
+}
+
 #endif

@@ -8,7 +8,7 @@ namespace Task
   class Task3Handler: public TaskHandler 
   {
     public: 
-      Task3Handler():TaskHandler{400U}
+      Task3Handler():TaskHandler{convertTickFromMs(400U)}
       { }
 
       void run(void* param) override;

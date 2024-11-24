@@ -10,7 +10,7 @@ namespace Task
   class Task1Handler: public TaskHandler 
   {
     public: 
-      Task1Handler(): TaskHandler{1000U}
+      Task1Handler(): TaskHandler{convertTickFromMs(1000U)}
       { }
 
       void run(void* param) override;

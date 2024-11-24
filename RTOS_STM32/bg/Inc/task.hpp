@@ -15,7 +15,7 @@ namespace Task
     explicit TaskHandler(TaskHandle_t const taskHandle): m_taskHandle(taskHandle)
     { }
 
-    explicit TaskHandler(uint16_t const taskCycle): m_taskCycle_ms{taskCycle}
+    explicit TaskHandler(uint16_t const taskCycle): m_taskCycleTick{taskCycle}
     { }
 
     TaskHandler() = default;
@@ -35,7 +35,8 @@ namespace Task
 
   protected:
     TaskHandle_t m_taskHandle{nullptr}; ///member to keep the control block of Task
-    uint16_t m_taskCycle_ms; 
+    TickType_t m_currentWakeTimeTick{0U}; ///default WakeTime, shall be updated in task handler
+    uint16_t m_taskCycleTick; 
   };
 
 
