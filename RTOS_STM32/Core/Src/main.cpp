@@ -100,7 +100,12 @@ int main(void)
   MX_SPI1_Init();
   //MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
+  //Enabel Cycle Counter of CPU for timestamp trackign
+  DWT_Type * const cortexM4DWTReg{DWT};
+  cortexM4DWTReg->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
+  SEGGER_SYSVIEW_Conf();
+  SEGGER_SYSVIEW_Start();
   taskCreationResult = Task::createTasks();
 
   vTaskStartScheduler();
@@ -113,7 +118,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    MX_USB_HOST_Process();
+    //MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
   }

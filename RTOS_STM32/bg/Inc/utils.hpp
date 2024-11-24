@@ -3,10 +3,16 @@
 
 extern "C"
 {
+  #include <stdio.h>
   #include "FreeRTOS.h"
   #include "task.h"
-  #include <stdio.h>
+  #include "stm32f4xx_hal.h"
 }
 
+
+constexpr TickType_t convertTickFromMs(uint32_t miliSec)
+{
+  return miliSec/portTICK_PERIOD_MS;
+}
 
 #endif

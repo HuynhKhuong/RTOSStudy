@@ -23,6 +23,7 @@
 #include "main.h"
 /* USER CODE BEGIN Includes */
 
+void vInitPrioGroupValue(void);
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -74,7 +75,10 @@ void HAL_MspInit(void)
   /* System interrupt init*/
 
   /* USER CODE BEGIN MspInit 1 */
-
+  ///By default, Priority Group Init is done by the scheduler
+  ///SEGGER requires priority group before scheduler init so we have 
+  ///to init before-hand  
+  vInitPrioGroupValue(); 
   /* USER CODE END MspInit 1 */
 }
 
