@@ -2,14 +2,17 @@
 #include "task2.hpp"
 #include "task3.hpp"
 
+namespace //unknown namespace
+{
+  TaskHandle_t taskHandle1{nullptr};
+  TaskHandle_t taskHandle2{nullptr};
+  TaskHandle_t taskHandle3{nullptr};
+}
+
 namespace Task
 {
-  
   BaseType_t createTasks(void)
   {
-    TaskHandle_t taskHandle1{nullptr};
-    TaskHandle_t taskHandle2{nullptr};
-    TaskHandle_t taskHandle3{nullptr};
 
     BaseType_t result{pdPASS};
 

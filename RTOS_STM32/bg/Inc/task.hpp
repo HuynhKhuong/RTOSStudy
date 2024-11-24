@@ -6,8 +6,6 @@
 namespace Task
 {
   BaseType_t createTasks(void); 
-  extern TaskHandle_t taskHandle1;
-  extern TaskHandle_t taskHandle2;
 
   class TaskHandler
   {
