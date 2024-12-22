@@ -67,3 +67,13 @@ RTOS_STM32/bg/Src/task1.cpp
 RTOS_STM32/bg/Src/task2.cpp 
 RTOS_STM32/bg/Src/task3.cpp 
 
+### EXERCISE 3
+Delete Task
+Task to task notification using direct notification API
+tasks toggling 3 different LED 
+button task that poll for the button press every 10ms 
+If button task detects button press, it should send a notification LED toggling task
+
+When LED toggling task receives the notification -> delete itself
+
+
