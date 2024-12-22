@@ -7,22 +7,21 @@ namespace Task
   void Task1Handler::task1Run(void* param)
   {
     task1.m_currentWakeTimeTick = xTaskGetTickCount();
-    uint32_t ulNotificationValue{0U};
+    BaseType_t NotifyResult{pdFALSE};
 
     while(1)
     {
       //User code to do here
-      //
-
-      xTaskNotifyWait( 0U, 0x1U, &ulNotificationValue, 0U);
-      if(ulNotificationValue == 1)
-      {
-        vTaskDelete(task1.getTaskHandle());
-      }
-      else
+      NotifyResult = xTaskNotifyWait( 0U, 0U, nullptr, 0U);
+      
+      if(NotifyResult == pdFALSE)
       {
         task1.m_LEDHandler.blinkLED();
         vTaskDelayUntil(&task1.m_currentWakeTimeTick, task1.m_taskCycleTick);
+      }
+      else
+      {
+        vTaskDelete(task1.getTaskHandle());
       }
     }
   }

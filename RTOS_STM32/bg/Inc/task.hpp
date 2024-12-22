@@ -23,7 +23,7 @@ namespace Task
 
     virtual void run(void* param) = 0;
 
-    const TaskHandle_t getTaskHandle(void) const
+    TaskHandle_t getTaskHandle(void) 
     {
       return m_taskHandle;
     }
@@ -90,9 +90,9 @@ namespace Task
       {
           return m_currentInputState;
       }
-        
+
       /*
-       * isInputClicked checks if there is a single rise from LOW to HIGH state
+       * isInputClicked checks if there is a single rise from released to pressed state
        * of the input
        */
       bool isInputClicked(void)
@@ -101,8 +101,8 @@ namespace Task
         static GPIO_PinState l_preInputState{senseInput()};
         GPIO_PinState l_curInputState{senseInput()};
 
-        if((l_preInputState == GPIO_PinState::GPIO_PIN_RESET) && 
-            (l_curInputState == GPIO_PinState::GPIO_PIN_SET))
+        if((isInputPressed(l_preInputState) == false) && 
+            (isInputPressed(l_curInputState) == true))
         {
           returnVal = true;
         }
@@ -135,6 +135,11 @@ namespace Task
       }
 
     private:
+      static const bool isInputPressed(const GPIO_PinState inputState) 
+      {
+          return (inputState == GPIO_PinState::GPIO_PIN_RESET);
+      } 
+
       GPIO_TypeDef* m_inputSensingPort;
       uint16_t m_inputSensingPin;
       GPIO_PinState m_currentInputState{GPIO_PinState::GPIO_PIN_RESET};

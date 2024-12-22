@@ -6,11 +6,24 @@ namespace Task
 
   void Task2Handler::task2Run(void* param)
   {
+
+    BaseType_t NotifyResult{pdFALSE};
+
     while(1)
     {
       //User code to do here
-      task2.m_LEDHandler.blinkLED();
-      vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
+      NotifyResult = xTaskNotifyWait( 0U, 0U, nullptr, 0U);
+      
+      if(NotifyResult == pdFALSE)
+      {
+        //User code to do here
+        task2.m_LEDHandler.blinkLED();
+        vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
+      }
+      else
+      {
+        vTaskDelete(task2.getTaskHandle());
+      }
     }
   }
 
