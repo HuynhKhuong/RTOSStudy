@@ -11,6 +11,7 @@ namespace Task
     while(1)
     {
       //User code to do here
+      task4.m_userInputHandler.queryInputFromHardware();
       vTaskDelayUntil(&task4.m_currentWakeTimeTick, task4.m_taskCycleTick);
     }
   }

@@ -15,6 +15,9 @@ namespace Task
 
       void run(void* param) override;
       static void task4Run(void* param);
+
+    private:
+      UserInputHandler m_userInputHandler{GPIOA, GPIO_PIN_0};
   };
 
   extern Task4Handler task4; 
