@@ -10,7 +10,7 @@ namespace Task
   class TaskHandler
   {
   public:
-    explicit TaskHandler(TaskHandle_t const taskHandle): m_taskHandle(taskHandle)
+    explicit TaskHandler(TaskHandle_t const taskHandle,uint16_t const taskCycle): m_taskHandle{taskHandle},m_taskCycleTick{taskCycle}
     { }
 
     explicit TaskHandler(uint16_t const taskCycle): m_taskCycleTick{taskCycle}
@@ -51,6 +51,7 @@ namespace Task
         if(m_ledDrivingPort == nullptr) return;
 
         HAL_GPIO_WritePin(m_ledDrivingPort, m_ledDrivingPin, static_cast<GPIO_PinState>(ledStatus));
+        m_currentLedDrivingState = HAL_GPIO_ReadPin(m_ledDrivingPort, m_ledDrivingPin);
       }
 
       void blinkLED()
