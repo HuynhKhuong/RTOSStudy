@@ -85,3 +85,12 @@ RTOS_STM32/bg/Src/task1.cpp
 RTOS_STM32/bg/Src/task2.cpp 
 RTOS_STM32/bg/Src/task3.cpp 
 RTOS_STM32/bg/Src/task4.cpp 
+
+2 solutions: 
+1. each task modifys the shared variable to specify its next task to be deleted
+task4 receives it and notify the target task
+--> share variable 
+--> suspend scheduler solution
+2. task4 handles the order or deleting itself
+
+

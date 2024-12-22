@@ -21,7 +21,7 @@ namespace Task
       }
       else
       {
-        vTaskDelete(task1.getTaskHandle());
+        vTaskDelete(nullptr);
       }
     }
   }

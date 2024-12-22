@@ -22,7 +22,7 @@ namespace Task
       }
       else
       {
-        vTaskDelete(task2.getTaskHandle());
+        vTaskDelete(nullptr);
       }
     }
   }
