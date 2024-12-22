@@ -76,4 +76,12 @@ If button task detects button press, it should send a notification LED toggling 
 
 When LED toggling task receives the notification -> delete itself
 
-
+remember to add new source files configuration for SW build in STM32CubeIDE
+RTOS_STM32/bg/Inc/task1.hpp 
+RTOS_STM32/bg/Inc/task2.hpp 
+RTOS_STM32/bg/Inc/task3.hpp 
+RTOS_STM32/bg/Inc/task4.hpp 
+RTOS_STM32/bg/Src/task1.cpp 
+RTOS_STM32/bg/Src/task2.cpp 
+RTOS_STM32/bg/Src/task3.cpp 
+RTOS_STM32/bg/Src/task4.cpp 
