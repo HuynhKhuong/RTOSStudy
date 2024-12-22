@@ -90,7 +90,31 @@ namespace Task
       {
           return m_currentInputState;
       }
-      
+        
+      /*
+       * isInputClicked checks if there is a single rise from LOW to HIGH state
+       * of the input
+       */
+      bool isInputClicked(void)
+      {
+        bool returnVal; 
+        static GPIO_PinState l_preInputState{senseInput()};
+        GPIO_PinState l_curInputState{senseInput()};
+
+        if((l_preInputState == GPIO_PinState::GPIO_PIN_RESET) && 
+            (l_curInputState == GPIO_PinState::GPIO_PIN_SET))
+        {
+          returnVal = true;
+        }
+        else 
+        {
+          returnVal = false;
+        }
+
+        l_preInputState = l_curInputState; 
+        return returnVal;
+      }
+
       /*
        * To query pin state every 10ms
        * Using debounce method
