@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "projdefs.h"
 #include "usb_host.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -48,7 +49,7 @@ I2S_HandleTypeDef hi2s3;
 SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
-static BaseType_t taskCreationResult{pdPASS};
+static BaseType_t taskCreationResult{pdFAIL};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
