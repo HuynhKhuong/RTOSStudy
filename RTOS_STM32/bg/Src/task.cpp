@@ -16,7 +16,7 @@ namespace Task
   BaseType_t createTasks(void)
   {
 
-    BaseType_t result{pdPASS};
+    BaseType_t result{pdFAIL};
 
     result = xTaskCreate(task1.task1Run, "task 1", 200U, NULL, 2U, &taskHandle1);
 
