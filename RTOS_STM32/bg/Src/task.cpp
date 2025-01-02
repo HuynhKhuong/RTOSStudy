@@ -7,7 +7,7 @@ namespace //unknown namespace
 {
   TaskHandle_t taskHandle1{nullptr};
   TaskHandle_t taskHandle2{nullptr};
-  TaskHandle_t taskHandle3{nullptr};
+  TaskHandle_t taskHandle4{nullptr};
 }
 
 namespace Task
@@ -25,8 +25,13 @@ namespace Task
 
     configASSERT(result == pdPASS);
 
+    result = xTaskCreate(task4.task4Run, "task 4", 200U, NULL, 2U, &taskHandle4);
+
+    configASSERT(result == pdPASS);
+
     task1.setTaskHandle(taskHandle1);
     task2.setTaskHandle(taskHandle2);
+    task4.setTaskHandle(taskHandle4);
 
     return result;
   }
