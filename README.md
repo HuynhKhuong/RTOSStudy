@@ -102,3 +102,18 @@ If button pressed, it should send a notification LED toggling task
 
 When LED toggling task receives the notification -> delete itself
 
+2 solutions: 
+1. each task modifys the shared variable to specify its next task to be deleted
+ISR receives it and notify the target task
+--> share variable 
+--> suspend Interrupt & Scheduler solution
+portENTER_CRITICAL()
+
+### EXERCISE 5
+Create 2 Tasks: 
+task 1 with priority 2: toggle RED LED with 100ms duration 
+task 2 with priority 3: toogle GREED LED with 1s duration
+
+ISR to task notification using direct notification API
+priority between 2 tasks are exchanged
+
