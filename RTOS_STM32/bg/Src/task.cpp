@@ -25,13 +25,8 @@ namespace Task
 
     configASSERT(result == pdPASS);
 
-    result = xTaskCreate(task3.task3Run, "task 3", 200U, NULL, 2U, &taskHandle3);
-
-    configASSERT(result == pdPASS);
-
     task1.setTaskHandle(taskHandle1);
     task2.setTaskHandle(taskHandle2);
-    task3.setTaskHandle(taskHandle3);
 
     return result;
   }

@@ -379,6 +379,7 @@ static void MX_GPIO_Init(void)
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
+  HAL_NVIC_DisableIRQ(EXTI0_IRQn);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
