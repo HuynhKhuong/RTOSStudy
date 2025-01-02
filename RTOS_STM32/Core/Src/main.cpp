@@ -27,7 +27,6 @@
 #include "task.hpp"
 #include "task1.hpp"
 #include "task2.hpp"
-#include "task3.hpp"
 
 /* USER CODE END Includes */
 
