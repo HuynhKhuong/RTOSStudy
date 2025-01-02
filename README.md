@@ -93,4 +93,12 @@ task4 receives it and notify the target task
 --> suspend scheduler solution
 2. task4 handles the order or deleting itself
 
+### EXERCISE 4
+Delete Task
+ISR to task notification using direct notification API
+tasks toggling 3 different LED 
+button ISR for the button press 
+If button pressed, it should send a notification LED toggling task
+
+When LED toggling task receives the notification -> delete itself
 

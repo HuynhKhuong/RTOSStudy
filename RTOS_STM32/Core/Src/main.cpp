@@ -18,12 +18,17 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "SEGGER_SYSVIEW_FreeRTOS.h"
 #include "projdefs.h"
 #include "usb_host.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "task.hpp"
+#include "task1.hpp"
+#include "task2.hpp"
+#include "task3.hpp"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -330,7 +335,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : B1_Pin */
   GPIO_InitStruct.Pin = B1_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_EVT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(B1_GPIO_Port, &GPIO_InitStruct);
 
@@ -369,11 +374,40 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(MEMS_INT2_GPIO_Port, &GPIO_InitStruct);
 
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 6, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+
+  static uint8_t taskListIndexCount{0U};
+  static TaskHandle_t taskHandleList[3U]{nullptr, nullptr, nullptr};
+  BaseType_t l_higherPriorityTaskWoken{pdFALSE};
+  traceISR_ENTER();
+  if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
+  {
+    taskHandleList[0] = Task::task1.getTaskHandle(); 
+    taskHandleList[1] = Task::task2.getTaskHandle(); 
+    taskHandleList[2] = Task::task3.getTaskHandle();
+
+    if(taskListIndexCount < 3U)
+    {
+      TaskHandle_t curTaskHandle{taskHandleList[taskListIndexCount]};
+      if(curTaskHandle != nullptr)
+      {
+        (void)xTaskNotifyFromISR(curTaskHandle, 0U, eNotifyAction::eNoAction, &l_higherPriorityTaskWoken);
+      }
+      taskListIndexCount++;
+    }
+  }
+  traceISR_EXIT();
+}
 /* USER CODE END 4 */
 
 /**
