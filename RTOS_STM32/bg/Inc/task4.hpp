@@ -13,6 +13,9 @@ namespace Task
       Task4Handler(): TaskHandler{convertTickFromMs(10U)} //task cycle 10ms
       { }
 
+      explicit Task4Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(10U), taskPriority, "Task-4"}
+      { }
+
       void run(void* param) override;
       static void task4Run(void* param);
 
