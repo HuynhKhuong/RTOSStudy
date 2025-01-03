@@ -16,21 +16,22 @@ namespace Task
 
     BaseType_t result{pdFAIL};
 
-    result = xTaskCreate(task1.task1Run, "task 1", 200U, NULL, 2U, &taskHandle1);
+    result = xTaskCreate(task1.task1Run, task1.getTaskName(), 200U, NULL, task1.getTaskPriority(), &taskHandle1);
 
     configASSERT(result == pdPASS);
 
-    result = xTaskCreate(task2.task2Run, "task 2", 200U, NULL, 2U, &taskHandle2);
+    result = xTaskCreate(task2.task2Run, task2.getTaskName(), 200U, NULL, task2.getTaskPriority(), &taskHandle2);
 
     configASSERT(result == pdPASS);
 
-    result = xTaskCreate(task3.task3Run, "task 3", 200U, NULL, 2U, &taskHandle3);
+    result = xTaskCreate(task3.task3Run, task3.getTaskName(), 200U, NULL, task3.getTaskPriority(), &taskHandle3);
+
 
     configASSERT(result == pdPASS);
 
-    task1.setTaskHandle(taskHandle1);
-    task2.setTaskHandle(taskHandle2);
-    task3.setTaskHandle(taskHandle3);
+    task1.setTaskHandle();
+    task2.setTaskHandle();
+    task3.setTaskHandle();
 
     return result;
   }

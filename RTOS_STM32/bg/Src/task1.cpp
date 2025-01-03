@@ -1,8 +1,9 @@
 #include "task1.hpp"
+#include "stm32f4xx_hal.h"
 
 namespace Task
 {
-  Task1Handler task1{};  //to define task1 here
+  Task1Handler task1{2U};  //to define task1 here
 
   void Task1Handler::task1Run(void* param)
   {
