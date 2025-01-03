@@ -1,6 +1,5 @@
 #include "task1.hpp"
 #include "task2.hpp"
-#include "task3.hpp"
 #include "task4.hpp"
 
 namespace //unknown namespace
@@ -17,21 +16,21 @@ namespace Task
 
     BaseType_t result{pdFAIL};
 
-    result = xTaskCreate(task1.task1Run, "task 1", 200U, NULL, 2U, &taskHandle1);
+    result = xTaskCreate(task1.task1Run, task1.getTaskName(), 200U, NULL, task1.getTaskPriority(), &taskHandle1);
 
     configASSERT(result == pdPASS);
 
-    result = xTaskCreate(task2.task2Run, "task 2", 200U, NULL, 2U, &taskHandle2);
+    result = xTaskCreate(task2.task2Run, task2.getTaskName(), 200U, NULL, task2.getTaskPriority(), &taskHandle2);
 
     configASSERT(result == pdPASS);
 
-    result = xTaskCreate(task4.task4Run, "task 4", 200U, NULL, 2U, &taskHandle4);
+    result = xTaskCreate(task4.task4Run, task4.getTaskName(), 200U, NULL, task4.getTaskPriority(), &taskHandle4);
 
     configASSERT(result == pdPASS);
 
-    task1.setTaskHandle(taskHandle1);
-    task2.setTaskHandle(taskHandle2);
-    task4.setTaskHandle(taskHandle4);
+    task1.setTaskHandle();
+    task2.setTaskHandle();
+    task4.setTaskHandle();
 
     return result;
   }

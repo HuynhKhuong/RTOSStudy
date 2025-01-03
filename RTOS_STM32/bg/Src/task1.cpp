@@ -1,8 +1,9 @@
 #include "task1.hpp"
+#include "stm32f4xx_hal.h"
 
 namespace Task
 {
-  Task1Handler task1{};  //to define task1 here
+  Task1Handler task1{2U};  //to define task1 here
 
   void Task1Handler::task1Run(void* param)
   {
@@ -17,7 +18,8 @@ namespace Task
       if(NotifyResult == pdFALSE)
       {
         task1.m_LEDHandler.blinkLED();
-        vTaskDelayUntil(&task1.m_currentWakeTimeTick, task1.m_taskCycleTick);
+        HAL_Delay(task1.m_taskCycleTick); 
+        //vTaskDelayUntil(&task1.m_currentWakeTimeTick, task1.m_taskCycleTick);
       }
       else
       {

@@ -2,7 +2,7 @@
 
 namespace Task
 {
-  Task2Handler task2{};  //to define task2 here
+  Task2Handler task2{3U};  //to define task2 here
 
   void Task2Handler::task2Run(void* param)
   {
@@ -18,7 +18,8 @@ namespace Task
       {
         //User code to do here
         task2.m_LEDHandler.blinkLED();
-        vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
+        HAL_Delay(task2.m_taskCycleTick); 
+        //vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
       }
       else
       {
