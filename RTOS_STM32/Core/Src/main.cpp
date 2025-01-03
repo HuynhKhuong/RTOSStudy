@@ -385,28 +385,27 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+  // static uint8_t taskListIndexCount{0U};
+  // static TaskHandle_t taskHandleList[3U]{nullptr, nullptr, nullptr};
+  // BaseType_t l_higherPriorityTaskWoken{pdFALSE};
+  // traceISR_ENTER();
+  // if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
+  // {
+  //   taskHandleList[0] = Task::task1.getTaskHandle(); 
+  //   taskHandleList[1] = Task::task2.getTaskHandle(); 
+  //   taskHandleList[2] = Task::task3.getTaskHandle();
 
-  static uint8_t taskListIndexCount{0U};
-  static TaskHandle_t taskHandleList[3U]{nullptr, nullptr, nullptr};
-  BaseType_t l_higherPriorityTaskWoken{pdFALSE};
-  traceISR_ENTER();
-  if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
-  {
-    taskHandleList[0] = Task::task1.getTaskHandle(); 
-    taskHandleList[1] = Task::task2.getTaskHandle(); 
-    taskHandleList[2] = Task::task3.getTaskHandle();
-
-    if(taskListIndexCount < 3U)
-    {
-      TaskHandle_t curTaskHandle{taskHandleList[taskListIndexCount]};
-      if(curTaskHandle != nullptr)
-      {
-        (void)xTaskNotifyFromISR(curTaskHandle, 0U, eNotifyAction::eNoAction, &l_higherPriorityTaskWoken);
-      }
-      taskListIndexCount++;
-    }
-  }
-  traceISR_EXIT();
+  //   if(taskListIndexCount < 3U)
+  //   {
+  //     TaskHandle_t curTaskHandle{taskHandleList[taskListIndexCount]};
+  //     if(curTaskHandle != nullptr)
+  //     {
+  //       (void)xTaskNotifyFromISR(curTaskHandle, 0U, eNotifyAction::eNoAction, &l_higherPriorityTaskWoken);
+  //     }
+  //     taskListIndexCount++;
+  //   }
+  // }
+  // traceISR_EXIT();
 }
 /* USER CODE END 4 */
 
