@@ -50,13 +50,19 @@ I2S_HandleTypeDef hi2s3;
 
 SPI_HandleTypeDef hspi1;
 
+UART_HandleTypeDef huart2;
+
 /* USER CODE BEGIN PV */
+constexpr uint16_t g_userSize_cu8{1000U};
+
 static BaseType_t taskCreationResult{pdFAIL};
+static uint8_t g_userData[g_userSize_cu8]{0U};
 
 namespace Task{
   extern bool isInputClicked;
   bool isInputClicked{false};
 } //end of namespace Task
+  //
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,6 +71,7 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_USART2_UART_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
@@ -106,9 +113,14 @@ int main(void)
   MX_I2C1_Init();
   MX_I2S3_Init();
   MX_SPI1_Init();
-  //MX_USB_HOST_Init();
+//MX_USB_HOST_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  //Enabel Cycle Counter of CPU for timestamp trackign
+
+  ///Receive an amount of data in interrupt mode till either the expected number of data is received or an IDLE event occurs.
+  static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
+
+  ///Enabel Cycle Counter of CPU for timestamp trackign
   DWT_Type * const cortexM4DWTReg{DWT};
   cortexM4DWTReg->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
@@ -285,6 +297,39 @@ static void MX_SPI1_Init(void)
 }
 
 /**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
@@ -378,10 +423,9 @@ static void MX_GPIO_Init(void)
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 6, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+  //HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
-  HAL_NVIC_DisableIRQ(EXTI0_IRQn);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
@@ -397,6 +441,16 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     portEXIT_CRITICAL();
   }
   traceISR_EXIT();
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(Size);
+  if(huart == &huart2)
+  {
+    static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
+  }
 }
 /* USER CODE END 4 */
 
