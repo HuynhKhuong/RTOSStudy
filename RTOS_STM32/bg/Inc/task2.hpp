@@ -10,7 +10,9 @@ namespace Task
     public: 
       Task2Handler():TaskHandler{convertTickFromMs(800U)}
       { }
-
+      
+      explicit Task2Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(800U), taskPriority, "Task-2"}
+      { }
       static void task2Run(void* param);
       void run(void* param) override;
 
