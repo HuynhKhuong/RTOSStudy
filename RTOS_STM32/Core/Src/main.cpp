@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "SEGGER_SYSVIEW_FreeRTOS.h"
-#include "portmacro.h"
 #include "projdefs.h"
 #include "usb_host.h"
 
