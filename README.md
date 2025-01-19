@@ -117,3 +117,15 @@ task 2 with priority 3: toogle GREED LED with 1s duration
 ISR to task notification using direct notification API
 priority between 2 tasks are exchanged
 
+### EXERCISE 6
+takes input from user via UART and handles LED & RTC (of microcontroller)
+1. Process user sent commands over UART 
+2. FreeRTOS queues handling
+3. FreeRTOS software timers
+
+Requires: 
+- User's PC (master) application
+- Communication protocol
+- Communication stack implementation
+- Actuator (LEDs & RTC)
+
