@@ -1,12 +1,12 @@
 #include "task1.hpp"
 #include "task2.hpp"
-#include "task3.hpp"
+#include "task4.hpp"
 
 namespace //unknown namespace
 {
   TaskHandle_t taskHandle1{nullptr};
   TaskHandle_t taskHandle2{nullptr};
-  TaskHandle_t taskHandle3{nullptr};
+  TaskHandle_t taskHandle4{nullptr};
 }
 
 namespace Task
@@ -24,14 +24,13 @@ namespace Task
 
     configASSERT(result == pdPASS);
 
-    result = xTaskCreate(task3.task3Run, task3.getTaskName(), 200U, NULL, task3.getTaskPriority(), &taskHandle3);
-
+    result = xTaskCreate(task4.task4Run, task4.getTaskName(), 200U, NULL, task4.getTaskPriority(), &taskHandle4);
 
     configASSERT(result == pdPASS);
 
     task1.setTaskHandle();
     task2.setTaskHandle();
-    task3.setTaskHandle();
+    task4.setTaskHandle();
 
     return result;
   }

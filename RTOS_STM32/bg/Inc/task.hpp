@@ -6,6 +6,7 @@
 #include "stm32f4xx_hal.h"
 #include "stm32f4xx_hal_gpio.h"
 #include "utils.hpp"
+#include <stdint.h>
 
 namespace Task
 {
@@ -37,7 +38,7 @@ namespace Task
 
     virtual void run(void* param) = 0;
 
-    const TaskHandle_t getTaskHandle(void) const
+    TaskHandle_t getTaskHandle(void) 
     {
         return m_taskHandle;
     }
@@ -141,6 +142,78 @@ namespace Task
       GPIO_TypeDef* m_ledDrivingPort;
       uint16_t m_ledDrivingPin;
       GPIO_PinState m_currentLedDrivingState{GPIO_PinState::GPIO_PIN_RESET};
+  };
+
+  class UserInputHandler
+  {
+    public:
+      UserInputHandler(GPIO_TypeDef* inputSensingPort, uint16_t inputSensingPin):
+                  m_inputSensingPort{inputSensingPort}, m_inputSensingPin{inputSensingPin}
+      { }
+
+      const GPIO_PinState senseInput(void) 
+      {
+          return m_currentInputState;
+      }
+
+      /*
+       * isInputClicked checks if there is a single rise from released to pressed state
+       * of the input
+       */
+      bool isInputClicked(void)
+      {
+        bool returnVal; 
+        static GPIO_PinState l_preInputState{senseInput()};
+        GPIO_PinState l_curInputState{senseInput()};
+
+        if((isInputPressed(l_preInputState) == false) && 
+            (isInputPressed(l_curInputState) == true))
+        {
+          returnVal = true;
+        }
+        else 
+        {
+          returnVal = false;
+        }
+
+        l_preInputState = l_curInputState; 
+        return returnVal;
+      }
+
+      /*
+       * To query pin state every 10ms
+       * Using debounce method
+       */
+      void queryInputFromHardware(void)
+      {
+        GPIO_PinState l_tempInputState;
+        /// First store input state at start of debounce
+        l_tempInputState = HAL_GPIO_ReadPin(m_inputSensingPort, m_inputSensingPin);
+        if(l_tempInputState == m_currentInputState) return; //nothing changed
+
+        HAL_Delay(m_debounceTimeMs);
+        /// After debounce, check whether input state at start is correct?
+        if(HAL_GPIO_ReadPin(m_inputSensingPort, m_inputSensingPin) == l_tempInputState)
+        {
+          m_currentInputState = l_tempInputState;
+        }
+      }
+
+    private:
+      static const bool isInputPressed(const GPIO_PinState inputState) 
+      {
+          return (inputState == GPIO_PinState::GPIO_PIN_RESET);
+      } 
+
+      GPIO_TypeDef* m_inputSensingPort;
+      uint16_t m_inputSensingPin;
+      GPIO_PinState m_currentInputState{GPIO_PinState::GPIO_PIN_RESET};
+
+      /*
+       * Using debounce time for input state acquiring debounce method
+       * Make sure debounce time is under time constraint of the component using this method
+       */
+      const uint8_t m_debounceTimeMs{2U};  
   };
 
 }//End of namespace Task

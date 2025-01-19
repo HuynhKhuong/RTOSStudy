@@ -67,3 +67,53 @@ RTOS_STM32/bg/Src/task1.cpp
 RTOS_STM32/bg/Src/task2.cpp 
 RTOS_STM32/bg/Src/task3.cpp 
 
+### EXERCISE 3
+Delete Task
+Task to task notification using direct notification API
+tasks toggling 3 different LED 
+button task that poll for the button press every 10ms 
+If button task detects button press, it should send a notification LED toggling task
+
+When LED toggling task receives the notification -> delete itself
+
+remember to add new source files configuration for SW build in STM32CubeIDE
+RTOS_STM32/bg/Inc/task1.hpp 
+RTOS_STM32/bg/Inc/task2.hpp 
+RTOS_STM32/bg/Inc/task3.hpp 
+RTOS_STM32/bg/Inc/task4.hpp 
+RTOS_STM32/bg/Src/task1.cpp 
+RTOS_STM32/bg/Src/task2.cpp 
+RTOS_STM32/bg/Src/task3.cpp 
+RTOS_STM32/bg/Src/task4.cpp 
+
+2 solutions: 
+1. each task modifys the shared variable to specify its next task to be deleted
+task4 receives it and notify the target task
+--> share variable 
+--> suspend scheduler solution
+2. task4 handles the order or deleting itself
+
+### EXERCISE 4
+Delete Task
+ISR to task notification using direct notification API
+tasks toggling 3 different LED 
+button ISR for the button press 
+If button pressed, it should send a notification LED toggling task
+
+When LED toggling task receives the notification -> delete itself
+
+2 solutions: 
+1. each task modifys the shared variable to specify its next task to be deleted
+ISR receives it and notify the target task
+--> share variable 
+--> suspend Interrupt & Scheduler solution
+portENTER_CRITICAL()
+
+### EXERCISE 5
+Create 2 Tasks: 
+task 1 with priority 2: toggle RED LED with 100ms duration 
+task 2 with priority 3: toogle GREED LED with 1s duration
+
+ISR to task notification using direct notification API
+priority between 2 tasks are exchanged
+
