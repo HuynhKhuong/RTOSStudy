@@ -1,30 +1,37 @@
 #include "task1.hpp"
+#include "portmacro.h"
+#include "task2.hpp"
 #include "stm32f4xx_hal.h"
 
 namespace Task
 {
+  extern bool isInputClicked;
+
   Task1Handler task1{2U};  //to define task1 here
 
   void Task1Handler::task1Run(void* param)
   {
     task1.m_currentWakeTimeTick = xTaskGetTickCount();
-    BaseType_t NotifyResult{pdFALSE};
 
     while(1)
     {
-      //User code to do here
-      NotifyResult = xTaskNotifyWait( 0U, 0U, nullptr, 0U);
-      
-      if(NotifyResult == pdFALSE)
-      {
+        //global resource, need access block instruction
+        portENTER_CRITICAL();
+        const bool getInput{isInputClicked};
+        portEXIT_CRITICAL();
+
+
+        if(getInput) 
+        {
+            UBaseType_t exchangedPriority{task2.getTaskPriority()};
+            UBaseType_t currentPriority{task1.getTaskPriority()};
+
+            task1.setTaskPriority(exchangedPriority);
+            task2.setTaskPriority(currentPriority);
+        }
+
         task1.m_LEDHandler.blinkLED();
         HAL_Delay(task1.m_taskCycleTick); 
-        //vTaskDelayUntil(&task1.m_currentWakeTimeTick, task1.m_taskCycleTick);
-      }
-      else
-      {
-        vTaskDelete(nullptr);
-      }
     }
   }
 

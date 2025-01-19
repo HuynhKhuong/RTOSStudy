@@ -25,5 +25,4 @@ inline void switchVal(ParamType& param1, ParamType& param2)
   param1 = param2;
   param2 = tempVal;
 }
-
 #endif

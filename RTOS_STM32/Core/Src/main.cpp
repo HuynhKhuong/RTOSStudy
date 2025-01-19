@@ -19,14 +19,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "SEGGER_SYSVIEW_FreeRTOS.h"
+#include "portmacro.h"
 #include "projdefs.h"
 #include "usb_host.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "task.hpp"
-#include "task1.hpp"
-#include "task2.hpp"
 
 /* USER CODE END Includes */
 
@@ -54,6 +53,11 @@ SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN PV */
 static BaseType_t taskCreationResult{pdFAIL};
+
+namespace Task{
+  extern bool isInputClicked;
+  bool isInputClicked{false};
+} //end of namespace Task
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -385,27 +389,15 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  // static uint8_t taskListIndexCount{0U};
-  // static TaskHandle_t taskHandleList[3U]{nullptr, nullptr, nullptr};
-  // BaseType_t l_higherPriorityTaskWoken{pdFALSE};
-  // traceISR_ENTER();
-  // if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
-  // {
-  //   taskHandleList[0] = Task::task1.getTaskHandle(); 
-  //   taskHandleList[1] = Task::task2.getTaskHandle(); 
-  //   taskHandleList[2] = Task::task3.getTaskHandle();
-
-  //   if(taskListIndexCount < 3U)
-  //   {
-  //     TaskHandle_t curTaskHandle{taskHandleList[taskListIndexCount]};
-  //     if(curTaskHandle != nullptr)
-  //     {
-  //       (void)xTaskNotifyFromISR(curTaskHandle, 0U, eNotifyAction::eNoAction, &l_higherPriorityTaskWoken);
-  //     }
-  //     taskListIndexCount++;
-  //   }
-  // }
-  // traceISR_EXIT();
+  traceISR_ENTER();
+  if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
+  {
+    //global resource, need access block instructions
+    portENTER_CRITICAL();
+    Task::isInputClicked = true; 
+    portEXIT_CRITICAL();
+  }
+  traceISR_EXIT();
 }
 /* USER CODE END 4 */
 
