@@ -2,7 +2,7 @@
 
 namespace Task
 {
-  Task3Handler task3{};  //to define task3 here
+  Task3Handler task3{2U};  //to define task3 here
 
   void Task3Handler::task3Run(void* param)
   {
