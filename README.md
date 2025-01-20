@@ -147,6 +147,6 @@ Message Matrix
 |Items|Value|Functionality|Comment|
 |---|---|---|---|
 |Message ID|0x0|LED control| |
-|Signal|LED modes request| size = 4 bit|request modes supported from slave:0x0, 0x1, 0x2, 0x3 |
+|Signal|LED modes request| request modes supported from slave:0x0, 0x1, 0x2, 0x3 |size = 4 bit|
 |Message ID|0x1|RTC control| |
 
