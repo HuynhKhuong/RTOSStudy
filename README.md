@@ -129,3 +129,24 @@ Requires:
 - Communication stack implementation
 - Actuator (LEDs & RTC)
 
+#### Communication Stack
+Communication stack is taken from repo: https://github.com/HuynhKhuong/EEPROM_24C04
+
+communication is intepreted in terms of messages comprising below format
+
+|Byte 0|Byte 3:5|Byte 6:261|Byte 262|
+|---|---|---|---|
+|Message ID|DLC (includes Address & Data & PCI bytes)|Data|endofframe(*)|
+
++ Address field is considered as a signal in PDU layout (would contain: start bit, bit length, and byte order rule) [x]
++ Data  field  is considered as a signal in PDU layout (woud contain: start bit, byte order rule) [x]
++ Add DLC Field (Data length code) [x]
++ The layout must be agreed and preconfigured between master and slave [x]
+
+Message Matrix
+|Items|Value|Functionality|Comment|
+|---|---|---|---|
+|Message ID|0x0|LED control| |
+|---|---|---|---|
+| |0x1|RTC control| |
+
