@@ -157,8 +157,7 @@ void netComReceive(uint8_t *dataBuffer)
 
   if (messageIDMatched && messageE2EProtectPassed) 
   {
-    // Trigger copy to internal signal buffer and set indication flag to true
-    netComDispatchSignals(*msgHandlerPtr);
+    // set indication flag to true
     msgHandlerPtr->setNewMessageReceivedFlag(true);
   } 
   else 
