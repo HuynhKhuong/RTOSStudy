@@ -134,7 +134,7 @@ Communication stack is taken from repo: https://github.com/HuynhKhuong/EEPROM_24
 
 communication is intepreted in terms of messages comprising below format
 
-|Byte 0|Byte 3:5|Byte 6:261|Byte 262|
+|Byte 0|Byte 1|Byte 2|Byte 3|
 |---|---|---|---|
 |Message ID|DLC (includes Address & Data & PCI bytes)|Data|endofframe(*)|
 
