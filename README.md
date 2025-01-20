@@ -145,6 +145,7 @@ communication is intepreted in terms of messages comprising below format
 
 Message Matrix
 |Items|Value|Functionality|Comment|
+|---|---|---|---|
 |Message ID|0x0|LED control| |
 | |0x1|RTC control| |
 
