@@ -12,31 +12,45 @@ struct MessageHandlerInterface
 {
 public:
   using messageIDTypeDef = uint8_t;
-  
-  MessageHandlerInterface(const uint16_t &DLC,
+
+  enum class MessageDir: uint8_t
+  {
+    TX = 0U,
+    RX = 1U
+  };
+
+  MessageHandlerInterface(const MessageDir messageDir_cen,
+                          const uint16_t &DLC,
                           const messageIDTypeDef &messageID,
-                          bool (*cbkFunc)(uint8_t *))
-      : m_DLC(DLC), m_messageID(messageID), m_cbkFnc(cbkFunc) {}
+                          bool (*cbkFunc)(uint8_t *),
+                          void (*notifFunc)(void))
+      : m_DLC{DLC}, m_messageID{messageID}, m_cbkFnc{cbkFunc}, m_messageDir_cen{messageDir_cen}{}
 
   const uint16_t m_DLC;
   const messageIDTypeDef m_messageID;
 
   bool (*m_cbkFnc)(uint8_t *);
+  void (*m_notifFunc)(void);
   
   virtual const signalID *getSignalIDList(void) = 0; //this API should be improved to be memory safe
   virtual const uint16_t getNumberOfSignals(void) = 0; 
   virtual uint8_t* getLocalBuffer(void) = 0; //this API should be improved to be memory safe
 
   ///getter and setter for m_isNewMessageReceived
-  void setNewMessageReceivedFlag(bool flag){m_isNewMessageReceived = flag;}
-  bool getNewMessageReceivedFlag() const 
+  void setNewMessageEventFlag(bool flag){m_isNewMessageFlag = flag;}
+  bool getNewMessageEventFlag(void) const 
   { 
-    return m_isNewMessageReceived;
+    return m_isNewMessageFlag;
+  } 
+
+  MessageDir getMessageDir(void) const
+  {
+    return m_messageDir_cen;
   } 
 
 protected:
-  bool m_isNewMessageReceived{false};
-
+  bool m_isNewMessageFlag{false};
+  const MessageDir m_messageDir_cen;
 private:
   // To prevent copying attempts
   MessageHandlerInterface(const MessageHandlerInterface &obj) = default;
@@ -68,10 +82,18 @@ struct SignalLayoutTypeDef {
   ///\brief signal layout (bytewise) diagram
   ///\note  x means occupied by signal
   ///       o means not occupied by signal
+  ///(Little Endian)
   ///|b7|b6|b5|b4|b3|b2|b1|b0| - byte 0
-  ///|x |x |x |x |0 |0 |0 |0 | - byte 0
+  ///|x |x |x |x |0 |0 |0 |0 | - byte 0 (LSbyte)
   ///|x |x |x |x |x |x |x |x | - byte 1
   ///|0 |0 |0 |x |x |x |x |x | - byte 2
+  ///|0 |0 |0 |0 |0 |0 |0 |0 | - byte 3
+  ///
+  ///(Big Endian)
+  ///|b7|b6|b5|b4|b3|b2|b1|b0| - byte 0
+  ///|0 |0 |0 |0 |x |x |x |x | - byte 0
+  ///|x |x |x |x |x |x |x |x | - byte 1 
+  ///|x |x |x |0 |0 |0 |0 |0 | - byte 2 (LSbyte)
   ///|0 |0 |0 |0 |0 |0 |0 |0 | - byte 3
   
   ///\brief Some terms used to describe signal layout
@@ -88,9 +110,10 @@ template<uint8_t DataLength, uint8_t NumberOfSignals>
 class MessageLayout: public MessageHandlerInterface 
 {
 public:
-  MessageLayout(const messageIDTypeDef &messageID, bool (*cbkFunc)(uint8_t *),
+  MessageLayout(const messageIDTypeDef &messageID, bool (*cbkFunc)(uint8_t *), 
+                void (*notifFunc)(void), MessageHandlerInterface::MessageDir msgDir,
                 vfc::array<signalID,NumberOfSignals>&& signalList):
-                MessageHandlerInterface{DataLength, messageID, cbkFunc}, 
+                MessageHandlerInterface{msgDir, DataLength, messageID, cbkFunc, notifFunc}, 
                 m_signalList{signalList}{}
 
   const signalID *getSignalIDList(void) override { return &m_signalList[0U]; }

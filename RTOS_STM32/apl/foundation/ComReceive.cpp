@@ -6,36 +6,36 @@
 
 namespace NetCom {
 
-static inline void castingSignalType(const SignalLayoutTypeDef::SignalDataType type,
-                                      const void* source, 
-                                      void* destination)
-{
+  inline void castingSignalType(const SignalLayoutTypeDef::SignalDataType type,
+                                        const void* source, 
+                                        void* destination)
+  {
 
-  if(type == SignalLayoutTypeDef::SignalDataType::UINT8Type)
-  {
-      uint8_t tempContainer{*(static_cast<const uint8_t*>(source))};
-      *(static_cast<uint8_t*>(destination)) = tempContainer;
+    if(type == SignalLayoutTypeDef::SignalDataType::UINT8Type)
+    {
+        uint8_t tempContainer{*(static_cast<const uint8_t*>(source))};
+        *(static_cast<uint8_t*>(destination)) = tempContainer;
+    }
+    else if(type == SignalLayoutTypeDef::SignalDataType::UINT16Type)
+    {  
+      uint16_t tempContainer{*(static_cast<const uint16_t *>(source))};
+        *(static_cast<uint16_t *>(destination)) = tempContainer;
+    }
+    else if(type == SignalLayoutTypeDef::SignalDataType::UINT32Type)
+    {
+        uint32_t tempContainer{*(static_cast<const uint32_t  *>(source))};
+        *(static_cast<uint32_t*>(destination)) = tempContainer;
+    }
+    else if(type == SignalLayoutTypeDef::SignalDataType::FLOATType)
+    {
+        float tempContainer{*(static_cast<const float*>(source))};
+        *(static_cast<float*>(destination)) = tempContainer;
+    }
+    else 
+    {
+        //Do nothing
+    }
   }
-  else if(type == SignalLayoutTypeDef::SignalDataType::UINT16Type)
-  {  
-    uint16_t tempContainer{*(static_cast<const uint16_t *>(source))};
-      *(static_cast<uint16_t *>(destination)) = tempContainer;
-  }
-  else if(type == SignalLayoutTypeDef::SignalDataType::UINT32Type)
-  {
-      uint32_t tempContainer{*(static_cast<const uint32_t  *>(source))};
-      *(static_cast<uint32_t*>(destination)) = tempContainer;
-  }
-  else if(type == SignalLayoutTypeDef::SignalDataType::FLOATType)
-  {
-      float tempContainer{*(static_cast<const float*>(source))};
-      *(static_cast<float*>(destination)) = tempContainer;
-  }
-  else 
-  {
-      //Do nothing
-  }
-}
 
 ///\brief   Dispatch a single signal from buffer
 ///\param   SignalLayoutTypeDef layoutInfo of a signal
@@ -61,12 +61,20 @@ static void prv_ComSignalExtract(const SignalLayoutTypeDef &layoutInfo,
   ///\brief signal layout (bytewise) diagram
   ///\note  x means occupied by signal
   ///       o means not occupied by signal
+  ///(Little Endian)
   ///|b7|b6|b5|b4|b3|b2|b1|b0| - byte 0
   ///|x |x |x |x |0 |0 |0 |0 | - byte 0
   ///|x |x |x |x |x |x |x |x | - byte 1
   ///|0 |0 |0 |x |x |x |x |x | - byte 2
   ///|0 |0 |0 |0 |0 |0 |0 |0 | - byte 3
-
+  ///
+  ///(Big Endian)
+  ///|b7|b6|b5|b4|b3|b2|b1|b0| - byte 0
+  ///|0 |0 |0 |0 |x |x |x |x | - byte 0
+  ///|x |x |x |x |x |x |x |x | - byte 1
+  ///|x |x |x |0 |0 |0 |0 |0 | - byte 2
+  ///|0 |0 |0 |0 |0 |0 |0 |0 | - byte 3
+  
   if (layoutInfo.m_dataType == SignalLayoutTypeDef::SignalDataType::OTHERS) 
   {
     // Other ways to handle this signal
@@ -121,6 +129,8 @@ static void prv_ComSignalExtract(const SignalLayoutTypeDef &layoutInfo,
       else
       {
         uint8_t tempBitMask{static_cast<uint8_t>(bitMask_u8 >> (byteLength - numberOfBitsLeft))};
+        totalOfBitsCopied += numberOfBitsLeft;
+
         tempContainer &= tempBitMask;
 
         dataContainer |= static_cast<uint32_t>(tempContainer << totalOfBitsCopied);
@@ -158,7 +168,7 @@ void netComReceive(uint8_t *dataBuffer)
   if (messageIDMatched && messageE2EProtectPassed) 
   {
     // set indication flag to true
-    msgHandlerPtr->setNewMessageReceivedFlag(true);
+    msgHandlerPtr->setNewMessageEventFlag(true);
   } 
   else 
   {

@@ -9,13 +9,16 @@ void netComRxMainFunction(void)
   //do nothing
   for(auto messageHandler_ptr: g_messageConfigureTable) 
   {
-    if(messageHandler_ptr->getNewMessageReceivedFlag() == true)
+    if(messageHandler_ptr->getNewMessageEventFlag() == true)
     {
       //dispatch message buffer into internal container
       netComDispatchSignals(*messageHandler_ptr);
 
       //call user callback notify function
-      /* to do */
+      if(messageHandler_ptr->m_notifFunc != nullptr)
+      {
+        messageHandler_ptr->m_notifFunc();
+      }
     }
   }
 }

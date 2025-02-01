@@ -8,8 +8,8 @@
 namespace NetCom
 {
 
-MessageLayout<4U, 2U> g_LEDControlMsg{0x0U, rbNet_E2EProtect::LEDControlMsgDLCCheck, {g_IDLEDControlMsg, g_LEDModeReqSignal}}; //DataLength = ID + DLC + Data + *
-MessageLayout<4U, 1U> g_RTCControlMsg{0x1U, rbNet_E2EProtect::RTCControlMsgDLCCheck, {g_IDRTCControlMsg}}; //DataLength = ID + DLC + Data + *
+MessageLayout<4U, 2U> g_LEDControlMsg{0x0U, rbNet_E2EProtect::LEDControlMsgDLCCheck, nullptr, MessageHandlerInterface::MessageDir::RX, {g_IDLEDControlMsg, g_LEDModeReqSignal}}; //DataLength = ID + DLC + Data + *
+MessageLayout<4U, 1U> g_RTCControlMsg{0x1U, rbNet_E2EProtect::RTCControlMsgDLCCheck, nullptr, MessageHandlerInterface::MessageDir::RX, {g_IDRTCControlMsg}}; //DataLength = ID + DLC + Data + *
 
 vfc::array<MessageHandlerInterface* const, g_numberOfMessages> g_messageConfigureTable{
   &g_LEDControlMsg,
