@@ -3,6 +3,7 @@
 
 #include "ProtocolLayoutDef.hpp"
 #include "SymbolicNames.hpp"
+
 /// \note declared as constexpr in .hpp file would be treated as const and
 /// inline variables ODR would never be broken
 

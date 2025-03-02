@@ -4,7 +4,6 @@
 #include <stdint.h>
 namespace vfc
 {
-
   template<typename ElementDataType, uint16_t ContainerSize>
   struct array
   {
@@ -35,5 +34,16 @@ namespace vfc
       ElementDataType m_Container[ContainerSize];
   };
 } //end of namespace vfc
+
+namespace portable 
+{
+  ///\brief function userDefinedTxTransmit is used to invoke desired communication protocol servered by particular MCU via specific peripherals
+  ///\param dataPtr: data container in arrays of uint8_t 
+  ///\param dataSize: size (of uint8_t s) of data container
+  ///\note  this function is platform specific, to be defined differently in different MCUs
+  ///       In current usecase, this function shall be defined in the same place with (hardware) callbacks (main.cpp)
+  void userDefinedTxTransmit(const uint8_t* dataPtr_pu8, const uint8_t dataSize_cu8);
+
+} //end of namespace portable
 
 #endif

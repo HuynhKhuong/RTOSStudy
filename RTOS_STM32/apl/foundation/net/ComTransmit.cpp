@@ -1,4 +1,6 @@
 #include "ComTransmit.hpp"
+#include "ProtocolInterface.hpp"
+#include "ProtocolMCAL.hpp"
 #include "SymbolicNames.hpp"
 #include "SignalListDefine.hpp"
 
@@ -262,24 +264,19 @@ namespace NetCom {
     }
   }
 
-  void netComSendWrapper(uint16_t messageID)
+  void netComSendWrapper(MessageHandlerInterface &messageLayout)
   {
-    uint16_t tempID{messageID};
+    bool messageE2EProtectPassed{true};
 
-    if(tempID >= g_numberOfMessages)
+    if(messageLayout.m_cbkFnc != nullptr)
     {
-      tempID = g_numberOfMessages - 1U;
-    } 
-    
-    // hook to get matched message handler
-    MessageHandlerInterface* msgHandlerPtr{g_messageConfigureTable[tempID]};
-
-    bool messageE2EProtectPassed{false};
-    messageE2EProtectPassed = msgHandlerPtr->m_cbkFnc(msgHandlerPtr->getLocalBuffer());
+      messageE2EProtectPassed = messageLayout.m_cbkFnc(messageLayout.getLocalBuffer());
+    }
 
     if(messageE2EProtectPassed)
     {
-      ///call lower APIs
+      netHeaderSetup(messageLayout);
+      netComRequestTransmit(messageLayout.getLocalBuffer(), messageLayout.m_DLC);
     }
   }
 

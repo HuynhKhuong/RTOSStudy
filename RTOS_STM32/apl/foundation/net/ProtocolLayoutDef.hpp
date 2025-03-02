@@ -1,7 +1,7 @@
 #ifndef MESSAGE_CONFIGURE_HPP_INCLUDED
 #define MESSAGE_CONFIGURE_HPP_INCLUDED
 
-#include <foundation_utils.hpp>
+#include "foundation_utils.hpp"
 #include <stdint.h>
 
 namespace NetCom {

@@ -142,40 +142,6 @@ static void prv_ComSignalExtract(const SignalLayoutTypeDef &layoutInfo,
   }
 }
 
-void netComReceive(uint8_t *dataBuffer) 
-{
-  const uint8_t messageIDIndex{0U};
-  // get messageID
-  const uint8_t messageID{dataBuffer[messageIDIndex]};
-
-  bool messageIDMatched{false};
-  bool messageE2EProtectPassed{false};
-
-  // hook to get matched message handler
-  MessageHandlerInterface* msgHandlerPtr{nullptr};
-
-  for (MessageHandlerInterface* const messageHandler: g_messageConfigureTable)
-  {
-    if (messageHandler->m_messageID == messageID) 
-    {
-      messageE2EProtectPassed = messageHandler->m_cbkFnc(dataBuffer);
-      messageIDMatched = true;
-      msgHandlerPtr = messageHandler;
-      break;
-    }
-  }
-
-  if (messageIDMatched && messageE2EProtectPassed) 
-  {
-    // set indication flag to true
-    msgHandlerPtr->setNewMessageEventFlag(true);
-  } 
-  else 
-  {
-    // In case no match message ID, do nothing
-  }
-}
-
 void netComDispatchSignals(MessageHandlerInterface &messageLayout) 
 {
   const uint16_t numbOfSignals{messageLayout.getNumberOfSignals()};

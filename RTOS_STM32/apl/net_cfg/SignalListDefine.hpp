@@ -23,7 +23,7 @@ constexpr vfc::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
         SignalLayoutTypeDef(0U, 8U,
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
-                            g_RTCControlMsgIndex), //g_IDRTCControlMsg
+                            g_RTCControlMsgIndex), //IDRTCControlMsg
 
 };
 } //End of namespace NetCom

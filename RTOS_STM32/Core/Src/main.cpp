@@ -19,13 +19,18 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "SEGGER_SYSVIEW_FreeRTOS.h"
-#include "projdefs.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "stm32f4xx_hal_uart.h"
 #include "usb_host.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "task.hpp"
-
+#include "ProtocolMCAL.hpp"
+#include "net/NetRunnable.hpp"
+#include "foundation_utils.hpp"
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,7 +55,8 @@ I2S_HandleTypeDef hi2s3;
 
 SPI_HandleTypeDef hspi1;
 
-UART_HandleTypeDef huart2;
+extern UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart2{};
 
 /* USER CODE BEGIN PV */
 constexpr uint16_t g_userSize_cu8{1000U};
@@ -62,7 +68,11 @@ namespace Task{
   extern bool isInputClicked;
   bool isInputClicked{false};
 } //end of namespace Task
-  //
+  
+namespace{
+NetCom::NetRunnable g_userNetRunnable_st{};
+BaseType_t g_transmitLockingFlag_u16{pdFALSE};
+}//anonymous namespace
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -449,6 +459,13 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
   UNUSED(Size);
   if(huart == &huart2)
   {
+    uint8_t* l_receivedUserData = static_cast<uint8_t*>(pvPortMalloc(Size));
+    memcpy(static_cast<void*>(l_receivedUserData), 
+           static_cast<const void*>(&g_userData), 
+           Size);
+    NetCom::netComReceive(l_receivedUserData, Size);
+    vPortFree(static_cast<void*>(l_receivedUserData));
+
     static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
   }
 }
@@ -475,6 +492,41 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE END Callback 1 */
 }
 
+namespace portable{
+  inline bool netComIsTransmitInProgress(void)
+  {
+    return (g_transmitLockingFlag_u16 == pdTRUE); 
+  }
+
+  void userDefinedTxTransmit(const uint8_t* dataPtr_pu8, const uint8_t dataSize_cu8)
+  {
+    if(netComIsTransmitInProgress()) 
+    {
+      ///do nothing
+    }
+    else
+    {
+      HAL_UART_Transmit_IT(&huart2, dataPtr_pu8, dataSize_cu8);
+    }
+  }
+
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if(huart == &huart2)
+  {
+    NetCom::ProtocolHardwareObjHandler curObj_st{nullptr, 0U};
+    BaseType_t xHigherPriorityTaskWoken_u16{pdFALSE};
+    g_transmitLockingFlag_u16 = pdTRUE; //Transmit success, remove lock
+    UNUSED(xQueueReceiveFromISR(NetCom::g_MCALQueueHandler_st, &curObj_st, &xHigherPriorityTaskWoken_u16)); 
+    UNUSED(curObj_st);
+    if(xHigherPriorityTaskWoken_u16 == pdTRUE)
+    {
+      taskYIELD(); ///preemption for higher priority task woken by xQueueReceiveFromISR() 
+    }
+  } 
+}
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None
@@ -506,3 +558,5 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+

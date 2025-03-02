@@ -9,6 +9,7 @@ namespace NetCom{
 ///        buffer and save in internal data container
 /// \param MessageLayoutInterface: Layout information and local buffer to extract signal from
 /// \param Signals saved into internal signal container
+/// \note  This function should be called cyclically to achieve polling behaviour
 void netComDispatchSignals(MessageHandlerInterface &messageLayout);
 
 /// \brief netComReceiveSignal handles getting signal from internal container
@@ -16,12 +17,6 @@ void netComDispatchSignals(MessageHandlerInterface &messageLayout);
 /// \param signalID: ID defined in "MessageConfigure.hpp"
 /// \param void* ptr: user pointer to be stored with latest signal value
 void netComReceiveSignal(signalID ID, void *ptr);
-
-/// \brief netComReceive handles receiving message from master and dispatch
-/// messages to signals
-/// \param  dataBuffer[]: array container of data
-void netComReceive(uint8_t* dataBuffer);
-
 } // End of namespace NetCom
 
 #endif

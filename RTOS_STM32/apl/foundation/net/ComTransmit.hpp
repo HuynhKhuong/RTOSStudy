@@ -15,12 +15,13 @@ namespace NetCom {
   ///        from ComMainTx scheduler 
   /// 
   /// \param MessageLayoutInterface: Layout information and local buffer to extract signal from
+  /// \note  this function should be called from ComMainTx scheduler
   void netComSend(MessageHandlerInterface &messageLayout);
 
-  /// \brief netComSendWrapper wraps lowerlayer APIs to trigger sending application messages buffer to hardware layers 
-  ///        protocol 
+  /// \brief netComSendWrapper calls lowerlayer APIs to trigger sending application messages buffer    
   /// \param messageID: ID defined in "MessageConfigure.hpp"
-  void netComSendWrapper(uint16_t messageID);
+  /// \note  this function should be called from ComMainTx scheduler
+  void netComSendWrapper(MessageHandlerInterface &messageLayout);
 } //end of namespace NetCom
 
 #endif
