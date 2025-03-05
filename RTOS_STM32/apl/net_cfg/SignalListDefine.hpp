@@ -16,7 +16,7 @@ constexpr vfc::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
                             g_LEDControlMsgIndex), //IDLEDControlMsg
-        SignalLayoutTypeDef(8U, 8U,
+        SignalLayoutTypeDef(16U, 8U,
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
                             g_LEDControlMsgIndex), //LEDModeReqSignal
