@@ -1,7 +1,7 @@
 #ifndef RX_PROTECT_HPP_INCLUDED
 #define RX_PROTECT_HPP_INCLUDED
 
-#include <cstdint>
+#include <stdint.h>
 
 namespace rbNet_E2EProtect {
 ///\brief Callback Functions to be called for each message

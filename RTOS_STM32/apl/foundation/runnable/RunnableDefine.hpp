@@ -14,7 +14,6 @@ public:
   }
 
   virtual void init() = 0;
-///Public Synchronising ports to be defined here  
 
 protected:
   virtual void m_rxCustomerHook(void) = 0;

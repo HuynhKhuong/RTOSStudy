@@ -24,7 +24,7 @@ public:
                           const messageIDTypeDef &messageID,
                           bool (*cbkFunc)(uint8_t *),
                           void (*notifFunc)(void))
-      : m_DLC{DLC}, m_messageID{messageID}, m_cbkFnc{cbkFunc}, m_messageDir_cen{messageDir_cen}{}
+      : m_DLC{DLC}, m_messageID{messageID}, m_cbkFnc{cbkFunc}, m_notifFunc{notifFunc}, m_messageDir_cen{messageDir_cen}{}
 
   const uint16_t m_DLC;
   const messageIDTypeDef m_messageID;
