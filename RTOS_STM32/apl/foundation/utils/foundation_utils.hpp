@@ -16,7 +16,8 @@ namespace vfc
 
       inline ElementDataType*  end()
       {
-        return &m_Container[ContainerSize - 1U];
+        ElementDataType* value = &m_Container[ContainerSize - 1U]; 
+        return (++value);
       }
 
       const ElementDataType& operator[](const uint16_t pos) const
