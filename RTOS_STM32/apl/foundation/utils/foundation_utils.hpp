@@ -31,6 +31,18 @@ namespace vfc
           }
       }
 
+      ElementDataType& operator[](const uint16_t pos)
+      {
+          if(pos >= ContainerSize)
+          {
+              return m_Container[0U];
+          }
+          else 
+          {
+              return m_Container[pos];
+          }
+      }
+
       ElementDataType m_Container[ContainerSize];
   };
 } //end of namespace vfc

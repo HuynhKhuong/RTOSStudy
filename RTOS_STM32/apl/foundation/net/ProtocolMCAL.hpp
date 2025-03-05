@@ -1,7 +1,7 @@
 #ifndef PROTOCOLMCAL_HPP
 #define PROTOCOLMCAL_HPP
 
-#include <cstdint>
+#include <stdint.h>
 
 extern "C"
 {

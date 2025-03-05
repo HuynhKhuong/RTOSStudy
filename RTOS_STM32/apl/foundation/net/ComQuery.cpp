@@ -45,6 +45,8 @@ void netComRxMainFunction(void)
         l_notifyCall_bo = true;
       }
     }
+
+    messageHandler_ptr->setNewMessageEventFlag(false);
     portEXIT_CRITICAL();
 
     if(l_notifyCall_bo)
@@ -55,6 +57,7 @@ void netComRxMainFunction(void)
         messageHandler_ptr->m_notifFunc();
       }
     }
+
   }
 }
 

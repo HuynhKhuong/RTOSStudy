@@ -3,6 +3,7 @@
 
 #include "runnable/RunnableDefine.hpp"
 #include "ProtocolMCAL.hpp"
+#include "NetSenderPort.hpp"
 
 namespace NetCom {
 
@@ -14,6 +15,7 @@ public:
   void init(void) override
   {
     netComTransmitInfrasInit();
+    static_cast<void>(Port::LedModuleSenderPort::getPortSingleton());
   }
 
 protected:

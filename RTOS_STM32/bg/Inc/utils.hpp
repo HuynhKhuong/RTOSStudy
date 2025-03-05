@@ -3,12 +3,12 @@
 
 extern "C"
 {
-  #include <stdio.h>
   #include "FreeRTOS.h"
   #include "task.h"
   #include "stm32f4xx_hal.h"
 }
 
+#include <stdio.h>
 #include<type_traits>
 
 constexpr TickType_t convertTickFromMs(uint32_t miliSec)

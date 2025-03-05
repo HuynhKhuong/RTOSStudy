@@ -1,11 +1,15 @@
 #include "NetRunnable.hpp"
 #include "net/ComQuery.hpp"
+#include "NetSenderPort.hpp"
+
+namespace 
+{
+  NetCom::NetRunnable l_myNetRunnable_st{};
+}//anonymous namespace
 
 namespace NetCom
 {
   RunnableInf* g_myNetRunnable_st{nullptr};
-  static NetRunnable l_myNetRunnable_st{};
-
   NetRunnable::NetRunnable(void)
   {
     g_myNetRunnable_st = static_cast<RunnableInf*>(this);
@@ -19,6 +23,7 @@ namespace NetCom
   void NetRunnable::m_txCustomerHook(void) 
   {
     ///doing flag check and trigger sending to synchronization port
+    Port::LedModuleSenderPort::getPortSingleton().deliver();
   }
 
   void NetRunnable::m_customerRun(void) 

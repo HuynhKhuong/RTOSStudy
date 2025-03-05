@@ -31,6 +31,7 @@
 #include "net/NetRunnable.hpp"
 #include "foundation_utils.hpp"
 #include <string.h>
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,7 +71,7 @@ namespace Task{
 } //end of namespace Task
   
 namespace{
-NetCom::NetRunnable g_userNetRunnable_st{};
+/*NetCom::NetRunnable g_userNetRunnable_st{};*/
 BaseType_t g_transmitLockingFlag_u16{pdFALSE};
 }//anonymous namespace
 /* USER CODE END PV */
@@ -459,13 +460,14 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
   UNUSED(Size);
   if(huart == &huart2)
   {
-    uint8_t* l_receivedUserData = static_cast<uint8_t*>(pvPortMalloc(Size));
+	///work around to use malloc
+  
+    uint8_t* l_receivedUserData = new uint8_t[Size]{};
     memcpy(static_cast<void*>(l_receivedUserData), 
            static_cast<const void*>(&g_userData), 
            Size);
     NetCom::netComReceive(l_receivedUserData, Size);
-    vPortFree(static_cast<void*>(l_receivedUserData));
-
+    delete [](l_receivedUserData);
     static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
   }
 }
