@@ -4,6 +4,9 @@
 #include <stdint.h>
 namespace vfc
 {
+  ///re-alias the ptrdiff_t for local usage
+  using ptrdiff_t = uint32_t; ///process on 32-bit architecture so ptr type shall be 32bit long
+
   template<typename ElementDataType, uint16_t ContainerSize>
   struct array
   {

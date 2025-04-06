@@ -2,6 +2,7 @@
 #define PORTINTERFACE_HPP
 
 #include <stdint.h>
+#include "container.hpp"
 
 namespace Port
 {
@@ -11,29 +12,6 @@ enum class SignalStateDef: uint8_t
   SignalInitState, 
   SignalReceivedState,
   SiganlFailureState,
-};
-
-class ContainerInterface
-{
-public:
-  ContainerInterface() = default;
-  uint32_t getSequenceCounter(void) const
-  {
-    return m_sequenceCounter;
-  }
-
-  void increaseSequenceCounter(void)
-  {
-    m_sequenceCounter++;
-  }
-
-  void resetSequenceCounter(void)
-  {
-    m_sequenceCounter = 0U;
-  }
-
-private:
-  uint32_t m_sequenceCounter{0U};
 };
 
 template <typename PhysicalType, typename RawType>
@@ -90,6 +68,13 @@ private:
   PhysicalType m_physData{0U};
   RawType m_rawData{0U};
   const RawDataInfo<RawType> m_rawDataInfo;
+};
+
+class BasePortType: public Container::CInternal
+{
+  public:
+  BasePortType() = default;
+
 };
 
 ///Force explicit instantiation
