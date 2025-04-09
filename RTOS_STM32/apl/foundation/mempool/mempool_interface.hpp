@@ -62,7 +62,7 @@ class CMemPoolInterface: public CMemPoolInterfaceBase
 
     void releaseRef(PortDataBase_t& chunk, uint16_t subscriberCount)
     {
-      static_cast<void>(getMemPool().setRef(chunk, subscriberCount));
+      static_cast<void>(getMemPool().releaseRef(chunk, subscriberCount));
     }
 
     void setRef(PortDataBase_t& chunk, uint16_t subscriberCount)
