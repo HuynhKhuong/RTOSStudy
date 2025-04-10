@@ -23,6 +23,17 @@ namespace vfc
         return (++value);
       }
 
+      inline const ElementDataType*  begin() const
+      {
+        return &m_Container[0U];
+      }
+
+      inline const ElementDataType*  end() const
+      {
+        const ElementDataType* value = &m_Container[ContainerSize - 1U]; 
+        return (++value);
+      }
+
       const ElementDataType& operator[](const uint16_t pos) const
       {
           if(pos >= ContainerSize)
