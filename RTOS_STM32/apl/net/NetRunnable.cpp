@@ -1,6 +1,5 @@
 #include "NetRunnable.hpp"
 #include "net/ComQuery.hpp"
-#include "NetSenderPort.hpp"
 
 namespace 
 {
@@ -23,7 +22,6 @@ namespace NetCom
   void NetRunnable::m_txCustomerHook(void) 
   {
     ///doing flag check and trigger sending to synchronization port
-    Port::LedModuleSenderPort::getPortSingleton().deliver();
   }
 
   void NetRunnable::m_customerRun(void) 

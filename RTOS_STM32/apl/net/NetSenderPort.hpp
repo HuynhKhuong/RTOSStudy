@@ -1,36 +1,27 @@
 #ifndef NETSENDERPORT_HPP
 #define NETSENDERPORT_HPP
 
+#include "port/SenderPortDef.hpp"
+#include "led/LedReceiverPort.hpp"
 #include "NetPortIntf.hpp"
-#include "port/QueuePortDef.hpp"
 
 namespace Port
 {
+  class LedModuleSenderPort: public SenderPortUserType<2U, LedModuleReceiverPort, LEDModeReqInf>
+  {
+    public:
+      LedModuleSenderPort() = default;
+      ~LedModuleSenderPort() = default;
 
-class LedModuleSenderPort: public QueueSenderPort<LEDModeReqInf, 1U>
-{
-  public:
-    using BaseClass = QueueSenderPort<LEDModeReqInf, 1U>;
-    ~LedModuleSenderPort() = default;
+    private:
+      LedModuleSenderPort(const LedModuleSenderPort&) = delete;
+      LedModuleSenderPort(LedModuleSenderPort&&) = delete;
+      LedModuleSenderPort& operator=(LedModuleSenderPort&) = delete;
+      LedModuleSenderPort& operator=(LedModuleSenderPort&&) = delete;
 
-    static LedModuleSenderPort& getPortSingleton(void)
-    {
-      static LedModuleSenderPort l_privModulePort_st;
-      return l_privModulePort_st;
-    }
+  };
 
-  protected:
-    using BaseClass::m_receiveSubsriberList;
-    void m_customerConnect(void) override;
-
-  private:
-    LedModuleSenderPort()
-    {
-      connect();
-    }
-
-};
-
+  extern Port::LedModuleSenderPort g_netSenderPort_st;
 }
 
 #endif

@@ -15,7 +15,8 @@ public:
   void init(void) override
   {
     netComTransmitInfrasInit();
-    static_cast<void>(Port::LedModuleSenderPort::getPortSingleton());
+    Port::g_netSenderPort_st.init();
+//    static_cast<void>(Port::LedModuleSenderPort::getPortSingleton());
   }
 
 protected:

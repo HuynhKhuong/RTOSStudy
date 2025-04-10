@@ -10,7 +10,7 @@ namespace NetCom
   { 
     uint8_t signalVal_u8{0U}; 
     netComReceiveSignal(g_LEDModeReqSignal, static_cast<void*>(&signalVal_u8));  
-    Port::LEDModeReqInf& reservedChunk = Port::LedModuleSenderPort::getPortSingleton().reserve();
+    Port::LEDModeReqInf& reservedChunk = Port::g_netSenderPort_st.reserve();
     reservedChunk.m_LedModSignal.setSignalVal(signalVal_u8);
   }
 
