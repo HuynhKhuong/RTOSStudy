@@ -45,7 +45,7 @@ namespace extension
       ///\details provides memory chunk to write in. The chunk correspond with a port datatype.
       ///         Chunk shall be published to the subscriber via deliver
       ///\note    Ensure that only one chunk can be reserved at the same time.
-      PortDataBase_t& reserve(void)
+      PortDataBase_t* reserve(void)
       {
         if(!(isReserved()))
         {
@@ -57,7 +57,7 @@ namespace extension
           while(1){} //custom assertion
         }
 
-        return *m_currentStorage_p;
+        return m_currentStorage_p;
       }
 
       ///\brief Store the last deliered address. This information can be requested by user via getLastDelivery()
@@ -119,7 +119,8 @@ namespace extension
           if((*itr) != nullptr)
           {
             PortDataBase_t* depositChunk{nullptr};
-            if((*itr)->assign(&portData, depositChunk))
+            PortDataBase_t* portDataPtr{&portData};
+            if((*itr)->assign(&portDataPtr, depositChunk))
             {
               l_dispatchCount_u16++;
             }

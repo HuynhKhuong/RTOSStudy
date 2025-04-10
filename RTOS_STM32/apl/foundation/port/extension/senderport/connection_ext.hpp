@@ -14,6 +14,7 @@ namespace extension
   {
     public:
       using Mixin_t = MixinType;
+      using SubscriberList_t = typename MixinType::SubscriberList_t;
       using Subscriber_t = typename MixinType::Subscriber_t;
 
       Connection() = default;
@@ -26,7 +27,7 @@ namespace extension
       
       void init(void)
       {
-        const UBaseType_t uxItemSize{Mixin_t::getChunkSize()};
+        const UBaseType_t uxItemSize{sizeof(void*)};
         m_internalQueueContainer = xQueueCreate(Mixin_t::MAX_SUBSCRIBERS, uxItemSize);
       }
 

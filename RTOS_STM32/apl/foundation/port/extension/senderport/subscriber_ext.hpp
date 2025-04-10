@@ -2,11 +2,10 @@
 #define SUBSCRIBER_EXT_HPP
 
 #include "utils/foundation_utils.hpp"
-#include "PortDef.hpp"
 
 namespace extension
 {
-  template <typename MixinType, uint8_t MaxNumbOfSubscribers = 255U, typename SubscriberType = Port::ReceiverPort>  
+  template <typename MixinType, typename SubscriberType, uint8_t MaxNumbOfSubscribers = 255U>  
   class DynamicSubscriber: public MixinType
   {
     public: 

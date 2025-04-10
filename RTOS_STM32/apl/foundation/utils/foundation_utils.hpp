@@ -11,6 +11,7 @@ namespace vfc
   struct array
   {
       static_assert(ContainerSize != 0, "Size can't be 0");
+      using const_iterator = const ElementDataType*;
 
       inline ElementDataType*  begin()
       {
