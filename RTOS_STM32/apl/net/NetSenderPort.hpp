@@ -7,19 +7,7 @@
 
 namespace Port
 {
-  class LedModuleSenderPort: public SenderPortUserType<2U, LedModuleReceiverPort, LEDModeReqInf>
-  {
-    public:
-      LedModuleSenderPort() = default;
-      ~LedModuleSenderPort() = default;
-
-    private:
-      LedModuleSenderPort(const LedModuleSenderPort&) = delete;
-      LedModuleSenderPort(LedModuleSenderPort&&) = delete;
-      LedModuleSenderPort& operator=(LedModuleSenderPort&) = delete;
-      LedModuleSenderPort& operator=(LedModuleSenderPort&&) = delete;
-
-  };
+  using LedModuleSenderPort = SenderPort<2U, LedModuleReceiverPort, LEDModeReqInf>;
 
   extern Port::LedModuleSenderPort g_netSenderPort_st;
 }
