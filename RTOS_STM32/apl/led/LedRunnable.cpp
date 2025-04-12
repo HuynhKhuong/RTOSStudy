@@ -1,5 +1,5 @@
 #include "LedRunnable.hpp"
-#include "net/NetPortIntf.hpp"
+#include "LedReceiverPort.hpp"
 
 namespace 
 {
@@ -16,12 +16,13 @@ namespace LedCom
 
   void LedRunnable::m_rxCustomerHook(void) 
   {
-    if(m_LedModeSourcePort.isConnected())
+    if(Port::g_LedModeReceiverPort_st.isConnected())
     {
-      static_cast<void>(m_LedModeSourcePort.update());
-      if(m_LedModeSourcePort.hasNewData())
-      {
-        Port::LEDModeReqInf l_Data = m_LedModeSourcePort();
+      if(Port::g_LedModeReceiverPort_st.hasNewData())
+      { 
+        static_cast<void>(Port::g_LedModeReceiverPort_st.update());
+      
+        const Port::LEDModeReqInf* l_Data = Port::g_LedModeReceiverPort_st.getData();
         static_cast<void>(l_Data);
         ///do something
       }

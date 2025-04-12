@@ -1,7 +1,6 @@
 #ifndef LEDRUNNABLE_HPP
 #define LEDRUNNABLE_HPP
 
-#include <led/LedReceiverPort.hpp>
 #include "runnable/RunnableDefine.hpp"
 
 namespace LedCom {
@@ -20,7 +19,6 @@ public:
   {
   }
 
-  Port::LedModuleReceiverPort m_LedModeSourcePort{};
 
 protected:
   void m_rxCustomerHook(void) override;
