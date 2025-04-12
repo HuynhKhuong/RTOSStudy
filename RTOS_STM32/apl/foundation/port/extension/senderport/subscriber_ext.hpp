@@ -22,7 +22,8 @@ namespace extension
       }
       
       ~DynamicSubscriber() = default;
-      
+           
+    protected: 
       ///\brief add a subscriber to current subscriber list
       ///\note  if the list is full already, return false
       ///       Subscriber which are already in the list won't be added twice
@@ -58,7 +59,7 @@ namespace extension
         }
         m_subsriberListLatestIdx_u8 = 0;
       }    
-    protected:
+
       const SubscriberList_t& getReleaseList(void) const 
       {
         return m_receiveSubsriberList;
@@ -68,6 +69,7 @@ namespace extension
       {
         return m_subsriberListLatestIdx_u8;
       }
+
     private:
       DynamicSubscriber(const DynamicSubscriber&) = delete;
       DynamicSubscriber(DynamicSubscriber&&) = delete;

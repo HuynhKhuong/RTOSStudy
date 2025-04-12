@@ -32,14 +32,6 @@ namespace extension
       {
         return (m_currentStorage_p != nullptr);
       }
-      
-      ///\brief Extension handle: collect deposit from subscriber and  
-      ///       do publish new reserved chunk
-      PortDataBase_t* reserveIntern(void)
-      {
-        collectDeposits();
-        return Mixin_t::reserveIntern();
-      }
 
       ///\brief reserve a mempool chunk to work on
       ///\details provides memory chunk to write in. The chunk correspond with a port datatype.
@@ -60,6 +52,26 @@ namespace extension
         return m_currentStorage_p;
       }
 
+      void deliver(void)
+      {
+        //do deliver only if there was reserve before
+        if(isReserved())
+        {
+          deliverIntern(*m_currentStorage_p);
+          m_currentStorage_p = nullptr;
+        }
+      }
+
+    protected:
+
+      ///\brief Extension handle: collect deposit from subscriber and  
+      ///       do publish new reserved chunk
+      PortDataBase_t* reserveIntern(void)
+      {
+        collectDeposits();
+        return Mixin_t::reserveIntern();
+      }
+
       ///\brief Store the last deliered address. This information can be requested by user via getLastDelivery()
       void deliverIntern(PortDataBase_t& currentStorage)
       {
@@ -72,17 +84,6 @@ namespace extension
         dispatch(subscriberList, currentStorage);
       }
 
-      void deliver(void)
-      {
-        //do deliver only if there was reserve before
-        if(isReserved())
-        {
-          deliverIntern(*m_currentStorage_p);
-          m_currentStorage_p = nullptr;
-        }
-      }
-
-    protected:
       ///\brief Collect deposits from every subscriber 
       ///       All release request shall be collected.
       void collectDeposits(void)
@@ -119,7 +120,7 @@ namespace extension
           if((*itr) != nullptr)
           {
             PortDataBase_t* depositChunk{nullptr};
-            PortDataBase_t* portDataPtr{&portData};
+            const PortDataBase_t* portDataPtr{&portData};
             if((*itr)->assign(&portDataPtr, depositChunk))
             {
               l_dispatchCount_u16++;
