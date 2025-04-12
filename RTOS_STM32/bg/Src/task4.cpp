@@ -6,7 +6,7 @@
 
 namespace Task
 {
-  Task4Handler task4{3U};  //to define task4 here
+  Task4Handler task4{2U};  //to define task4 here
   /*
    * Example for sending notification to task 1
    */
