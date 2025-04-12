@@ -26,12 +26,15 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "task.hpp"
-#include "ProtocolMCAL.hpp"
-#include "net/NetRunnable.hpp"
-#include "foundation_utils.hpp"
 #include <string.h>
 #include <stdlib.h>
+
+#include "task.hpp"
+#include "ProtocolMCAL.hpp"
+#include "foundation_utils.hpp"
+#include "init/init.hpp"
+#include "init/connect.hpp"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -109,7 +112,8 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  init();       /* init for inter-task communication entities */
+  connect();    /* connect inter-task communication entities */
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -124,8 +128,9 @@ int main(void)
   MX_I2C1_Init();
   MX_I2S3_Init();
   MX_SPI1_Init();
-//MX_USB_HOST_Init();
+  /*MX_USB_HOST_Init();*/
   MX_USART2_UART_Init();
+
   /* USER CODE BEGIN 2 */
 
   ///Receive an amount of data in interrupt mode till either the expected number of data is received or an IDLE event occurs.
@@ -138,11 +143,9 @@ int main(void)
   SEGGER_SYSVIEW_Conf();
   SEGGER_SYSVIEW_Start();
   taskCreationResult = Task::createTasks();
-
   vTaskStartScheduler();
-  /* USER CODE END 2 */
-
   ///PC returned to main, scheduler start is failed
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -456,8 +459,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
-  /* Prevent unused argument(s) compilation warning */
-  UNUSED(Size);
   if(huart == &huart2)
   {
 	///work around to use malloc
