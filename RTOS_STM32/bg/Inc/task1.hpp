@@ -18,9 +18,6 @@ namespace Task
 
       void run(void* param) override;
       static void task1Run(void* param);
-
-    private:
-      LEDHandler m_LEDHandler{GPIOD, GPIO_PIN_12};
   };
 
   extern Task1Handler task1; 

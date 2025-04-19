@@ -17,7 +17,6 @@ namespace Task
       if(NotifyResult == pdFALSE)
       {
         //User code to do here
-        task3.m_LEDHandler.blinkLED();
         vTaskDelayUntil(&task3.m_currentWakeTimeTick, task3.m_taskCycleTick);
       }
       else
