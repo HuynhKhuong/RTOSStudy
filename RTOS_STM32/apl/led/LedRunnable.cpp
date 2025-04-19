@@ -20,11 +20,12 @@ namespace LedCom
     {
       if(Port::g_LedModeReceiverPort_st.hasNewData())
       { 
+        uint8_t modIndex{0U};
         static_cast<void>(Port::g_LedModeReceiverPort_st.update());
       
         const Port::LEDModeReqInf* l_Data = Port::g_LedModeReceiverPort_st.getData();
-        static_cast<void>(l_Data);
-        ///do something
+        l_Data->m_LedModSignal.getPhysVal(modIndex);
+        m_ledModeManager.setLedMode(modIndex);
       }
     }
   }
@@ -36,6 +37,7 @@ namespace LedCom
 
   void LedRunnable::m_customerRun(void) 
   {
+    m_ledModeManager.blink();
   }
 }//end of namespace LedCom
 
