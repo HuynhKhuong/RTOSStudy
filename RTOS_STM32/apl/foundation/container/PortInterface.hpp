@@ -37,13 +37,13 @@ public:
     //do nothing
   }
   
-  MetaData getRawVal(RawType& retrieveVal)
+  const MetaData getRawVal(RawType& retrieveVal) const
   {
     retrieveVal = m_rawData;
     return m_metaData_st;
   }
 
-  MetaData getPhysVal(PhysicalType& retrieveVal)
+  const MetaData getPhysVal(PhysicalType& retrieveVal) const
   {
     retrieveVal = m_physData;
     return m_metaData_st;
