@@ -121,7 +121,7 @@ namespace extension
           {
             PortDataBase_t* depositChunk{nullptr};
             const PortDataBase_t* portDataPtr{&portData};
-            if((*itr)->assign(&portDataPtr, depositChunk))
+            if((*itr)->assign(&portDataPtr, &depositChunk))
             {
               l_dispatchCount_u16++;
             }
