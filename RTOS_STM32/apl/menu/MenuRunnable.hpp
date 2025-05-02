@@ -5,6 +5,7 @@
 #include "runnable/RunnableDefine.hpp"
 #include "StateDefine/LedState.hpp"
 #include "StateDefine/IdleState.hpp"
+#include "menu/MenuSenderPort.hpp"
 
 ///\brief Menu runnable handles overall state management
 ///       State Management of the entire system are represented as numerical code system
@@ -25,8 +26,6 @@ public:
 
   void init(void) override
   {
-    ///Should perform receiver/sender port connection here
-
     ///perform init for all singletons
     static_cast<void>(LedState::getInstance());
     static_cast<void>(IdleState::getInstance());

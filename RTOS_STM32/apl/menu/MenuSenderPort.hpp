@@ -1,8 +1,7 @@
 #ifndef MENUSENDERPORT_HPP
 #define MENUSENDERPORT_HPP
 
-///\todo  To update when menu is finalized
-/*
+
 #include "SenderPortDef.hpp"
 #include "led/LedReceiverPort.hpp"
 #include "MenuPortIntf.hpp"
@@ -13,6 +12,5 @@ namespace Port
 
   extern LedModuleSenderPort g_menuLedSenderPort_st;
 }
-*/
 
 #endif

@@ -4,7 +4,7 @@
 namespace Menu
 {
   void LedState::eventListener(const EventType& eventType) 
-	{
+  {
     EventHandlerInf* l_eventHandler_ptr{nullptr};
     ///factory method + strategy 
     switch (eventType) 
@@ -16,7 +16,7 @@ namespace Menu
       case EventType::LED_CMD_2:
       case EventType::LED_CMD_3:
       case EventType::LED_CMD_4:
-        l_eventHandler_ptr = new LedEventHandler(static_cast<uint8_t>(eventType));
+        l_eventHandler_ptr = new LedEventHandler(static_cast<uint8_t>(eventType), static_cast<uint8_t>(eventType));
 		break;
       default: 
         l_eventHandler_ptr = new SwitchToIdle();
@@ -25,12 +25,12 @@ namespace Menu
 
     l_eventHandler_ptr->handle();
     delete(l_eventHandler_ptr);  
-	} 
+  }
 
   void LedState::run(void) 
-	{/*cyclic run*/}
+  {/*cyclic run*/}
 
   void LedState::updateState(void) 
-	{/*entrance logic*/}
+  {/*entrance logic*/}
 
 }//end of namespace Menu

@@ -69,9 +69,7 @@ namespace Led
 
       void blink(void) override
       {
-        ///first setup 
-        static bool isFirstCalled{true};
-        if(isFirstCalled)
+        if(m_isFirstCalled)
         {
           for(auto singleHandler: m_ledList[0U])
           {
@@ -82,7 +80,7 @@ namespace Led
           {
             singleHandler.driveLED(1U); ///set
           }
-          isFirstCalled = false;
+          m_isFirstCalled = false;
         }
         else
         {
@@ -100,6 +98,7 @@ namespace Led
       static LedModeInf& getSingleton(void) 
       {
         static LedModePairBlink1 m_mainProcessor{};
+        m_mainProcessor.m_isFirstCalled = true;
         return m_mainProcessor;
       }
 
@@ -121,6 +120,8 @@ namespace Led
             {LD6_GPIO_Port, LD6_Pin}
         }}
       }};
+
+      bool m_isFirstCalled{true};
   };
 
   class LedModePairBlink2: public LedModeInf
@@ -131,8 +132,7 @@ namespace Led
       void blink(void) override
       {
         ///first setup 
-        static bool isFirstCalled{true};
-        if(isFirstCalled)
+        if(m_isFirstCalled)
         {
           for(auto singleHandler: m_ledList[0U])
           {
@@ -143,7 +143,7 @@ namespace Led
           {
             singleHandler.driveLED(1U); ///set
           }
-          isFirstCalled = false;
+          m_isFirstCalled = false;
         }
         else
         {
@@ -161,6 +161,7 @@ namespace Led
       static LedModeInf& getSingleton(void) 
       {
         static LedModePairBlink2 m_mainProcessor{};
+        m_mainProcessor.m_isFirstCalled = true;
         return m_mainProcessor;
       }
 
@@ -181,6 +182,8 @@ namespace Led
             {LD5_GPIO_Port, LD5_Pin}
         }}
       }};
+
+      bool m_isFirstCalled{true};
   };
 
   class LedModeBlinkCircle: public LedModeInf
@@ -206,12 +209,13 @@ namespace Led
           l_index_u8++;
         }
 
-        s_currentLedIndex_u8 = (++s_currentLedIndex_u8 == 5U)?0U:s_currentLedIndex_u8; 
+        s_currentLedIndex_u8 = (++s_currentLedIndex_u8 == 4U)?0U:s_currentLedIndex_u8;
       }
 
       static LedModeInf& getSingleton(void) 
       {
         static LedModeBlinkCircle m_mainProcessor{};
+        m_mainProcessor.m_isFirstCalled = true;
         return m_mainProcessor;
       }
 
@@ -229,6 +233,8 @@ namespace Led
         {LD5_GPIO_Port, LD5_Pin},
         {LD6_GPIO_Port, LD6_Pin}
       }};
+
+      bool m_isFirstCalled{true};
   };
 
   class LedModeStop: public LedModeInf

@@ -11,6 +11,10 @@ namespace Menu
       LedEventHandler(uint32_t eventId):EventHandlerInf{eventId} 
       {/*do nothing*/}
 
+      LedEventHandler(uint32_t eventId, const uint8_t ledMode_u8):
+    	  	  	  	  EventHandlerInf{eventId}, m_ledMode_u8{ledMode_u8}
+      {/*do nothing*/}
+
       ~LedEventHandler() = default;
 
       void setLedMode(const uint8_t ledMode_u8)

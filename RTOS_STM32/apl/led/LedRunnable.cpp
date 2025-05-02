@@ -31,9 +31,7 @@ namespace LedCom
   }
 
   void LedRunnable::m_txCustomerHook(void) 
-  {
-    ///doing flag check and trigger sending to synchronization port
-  }
+  {/* do nothing*/}
 
   void LedRunnable::m_customerRun(void) 
   {

@@ -1,5 +1,6 @@
 #include "MenuRunnable.hpp"
 #include "menu/MenuReceiverPort.hpp"
+#include "menu/MenuSenderPort.hpp"
 #include "menu/MenuStateMachine.hpp"
 
 namespace 
@@ -33,7 +34,7 @@ namespace Menu
 
   void MenuRunnable::m_txCustomerHook(void) 
   {
-    ///doing flag check and trigger sending to synchronization port
+    Port::g_menuLedSenderPort_st.deliver();
   }
 
   void MenuRunnable::m_customerRun(void) 
