@@ -112,8 +112,6 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-  init();       /* init for inter-task communication entities */
-  connect();    /* connect inter-task communication entities */
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -142,7 +140,11 @@ int main(void)
 
   SEGGER_SYSVIEW_Conf();
   SEGGER_SYSVIEW_Start();
+
   taskCreationResult = Task::createTasks();
+  init();       /* init for inter-task communication entities */
+  connect();    /* connect inter-task communication entities */
+
   vTaskStartScheduler();
   ///PC returned to main, scheduler start is failed
   /* USER CODE END 2 */
