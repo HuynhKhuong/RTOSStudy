@@ -2,7 +2,7 @@
 #define LEDRECEIVERPORT_HPP
 
 #include "port/ReceiverPortDef.hpp"
-#include "net/NetPortIntf.hpp"
+#include "menu/MenuPortIntf.hpp"
 
 namespace Port
 {
