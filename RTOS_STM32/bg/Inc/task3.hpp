@@ -8,10 +8,10 @@ namespace Task
   class Task3Handler: public TaskHandler 
   {
     public: 
-      Task3Handler():TaskHandler{convertTickFromMs(400U)}
+      Task3Handler():TaskHandler{convertTickFromMs(10U)}
       { }
 
-      explicit Task3Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(400U), taskPriority, "Task-3"}
+      explicit Task3Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(10U), taskPriority, "Task-3"}
       { }
       void run(void* param) override;
       static void task3Run(void* param);

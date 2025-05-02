@@ -1,5 +1,5 @@
 #include "task2.hpp"
-//#include "led/LedRunnable.hpp" //to restore when menu task is done
+#include "led/LedRunnable.hpp" //to restore when menu task is done
 
 namespace Task
 {
@@ -8,10 +8,10 @@ namespace Task
   void Task2Handler::task2Run(void* param)
   {
     task2.m_currentWakeTimeTick = xTaskGetTickCount();
-    /*LedCom::g_myLedRunnable_st->init();*/
+    LedCom::g_myLedRunnable_st->init();
     while(1)
     {
-      /*LedCom::g_myLedRunnable_st->run();*/
+      LedCom::g_myLedRunnable_st->run();
       vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
     }
   }
