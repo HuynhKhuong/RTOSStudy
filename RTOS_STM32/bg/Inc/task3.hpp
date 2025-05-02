@@ -11,7 +11,7 @@ namespace Task
       Task3Handler():TaskHandler{convertTickFromMs(400U)}
       { }
 
-      explicit Task3Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(400U), taskPriority, "Task-2"}
+      explicit Task3Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(400U), taskPriority, "Task-3"}
       { }
       void run(void* param) override;
       static void task3Run(void* param);
