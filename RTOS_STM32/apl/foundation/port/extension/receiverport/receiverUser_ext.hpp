@@ -40,11 +40,7 @@ namespace extension
       const PortData_t* getData(void) const
       {
         const PortDataType* retVal{nullptr};
-
-        if(MixinType::hasNewData())
-        {
-          retVal = reinterpret_cast<const PortDataType*>(MixinType::getDataContainer());
-        }
+        retVal = reinterpret_cast<const PortDataType*>(MixinType::getDataContainer());
             
         return retVal;
       }
