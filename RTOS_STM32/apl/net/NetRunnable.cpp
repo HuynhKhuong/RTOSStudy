@@ -1,6 +1,5 @@
 #include "NetRunnable.hpp"
 #include "net/ComQuery.hpp"
-#include "net/NetSenderPort.hpp"
 
 namespace 
 {
@@ -22,7 +21,7 @@ namespace NetCom
 
   void NetRunnable::m_txCustomerHook(void) 
   {
-    Port::g_netSenderPort_st.deliver();
+	Port::g_netMenuSenderPort_st.deliver();
   }
 
   void NetRunnable::m_customerRun(void) 

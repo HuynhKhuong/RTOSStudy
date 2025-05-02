@@ -1,9 +1,13 @@
 #include "init.hpp"
-#include "net/NetSenderPort.hpp"
+//#include "menu/MenuSenderPort.hpp"
 
 void init(void)
 {
-  Port::g_netSenderPort_st.init();
+  ///\todo update when menu is finalized
+  ///
+  /*
+  Port::g_menuLedSenderPort_st.init();
+  */
 }
 
 

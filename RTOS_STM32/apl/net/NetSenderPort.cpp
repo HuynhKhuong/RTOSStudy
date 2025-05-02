@@ -2,6 +2,6 @@
   
 namespace Port
 {
-  Port::LedModuleSenderPort g_netSenderPort_st{};
+  MenuModuleSenderPort g_netMenuSenderPort_st{};
 }
 

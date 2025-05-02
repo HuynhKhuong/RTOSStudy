@@ -2,14 +2,15 @@
 #define NETSENDERPORT_HPP
 
 #include "port/SenderPortDef.hpp"
-#include "led/LedReceiverPort.hpp"
-#include "NetPortIntf.hpp"
+#include "menu/MenuReceiverPort.hpp"
 
 namespace Port
 {
-  using LedModuleSenderPort = SenderPort<2U, LedModuleReceiverPort, LEDModeReqInf>;
+  
+  using MenuModuleSenderPort = SenderPortLightWeight<1U, MenuReceiverPort, uint32_t>;
 
-  extern Port::LedModuleSenderPort g_netSenderPort_st;
+  extern MenuModuleSenderPort g_netMenuSenderPort_st;
+
 }
 
 #endif
