@@ -19,22 +19,22 @@ namespace extension
       ~ReceiverConnection() = default;
 
       void disconnect(void) 
-			{
+      {
         MediumType_t* l_transporter_pst{Mixin_t::getTransporter()};
         *(l_transporter_pst) = nullptr;
-			}
+      }
 
       void connect(MediumType_t const queuePtr) 
-			{
+      {
         MediumType_t* l_transporter_pst{Mixin_t::getTransporter()};
         *(l_transporter_pst) = queuePtr;
-			}
+      }
 
       bool isConnected(void) 
-			{
+      {
         const MediumType_t* l_transporter_pst{Mixin_t::getTransporter()};
-				return (*(l_transporter_pst)!= nullptr);
-			}
+		return (*(l_transporter_pst)!= nullptr);
+      }
 
     private:
       ReceiverConnection(const ReceiverConnection&) = delete;

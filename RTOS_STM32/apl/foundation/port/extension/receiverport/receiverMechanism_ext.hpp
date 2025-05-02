@@ -31,7 +31,7 @@ namespace extension
       ///\note  In case isReleased is called while Receiver Port is empty, receiver port is not locking any chunk
       ///       But is not returning any chunk, In this case: receiver port returns true, and param *depositChunk = nullptr
       inline bool isReleased(void* depositChunk) 
-			{
+      {
         switch(m_isChunkProcessed) 
         {
           case static_cast<uint8_t>(CHUNK_PROCESSED):
@@ -57,10 +57,10 @@ namespace extension
             return false;
           }
         }
-			}
+      }
 
       inline bool assign(const void* const portData, const void* depositChunk) 
-			{
+      {
         bool retVal_bo{false};
         bool isReceiverPortReleasing_bo = isReleased(const_cast<void*>(depositChunk)); 
         //if current portdata isn't ready to be released, can't receive new data
@@ -79,24 +79,24 @@ namespace extension
         }
 
 				return retVal_bo;
-			}
+      }
 
       bool hasNewData(void) const
-			{
-				return m_isChunkProcessed == CHUNK_NOT_PROCESSED;
-			}
+      {
+		return m_isChunkProcessed == CHUNK_NOT_PROCESSED;
+      }
 
       bool hasData(void) const
-			{
-				return m_isChunkProcessed != IDLE;
-			}
+      {
+		return m_isChunkProcessed != IDLE;
+      }
 
       bool update(void)
-			{
-        bool retStatus = xQueueReceive(m_internalTransporter, &m_internalDataContainer, 0U);
-        m_isChunkProcessed = CHUNK_PROCESSED;
-        return retStatus;
-			}
+      {
+		bool retStatus = xQueueReceive(m_internalTransporter, &m_internalDataContainer, 0U);
+		m_isChunkProcessed = CHUNK_PROCESSED;
+		return retStatus;
+      }
 
     protected:
       MediumType_t* getTransporter(void)

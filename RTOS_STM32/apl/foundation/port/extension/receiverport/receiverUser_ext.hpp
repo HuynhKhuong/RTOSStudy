@@ -16,17 +16,17 @@ namespace extension
       ~ReceiverUser() = default;
 
       bool hasNewData(void) const
-			{
-				return MixinType::hasNewData();
-			}
+      {
+		return MixinType::hasNewData();
+      }
 
       bool hasData(void) const
-			{
-				return MixinType::hasData();
-			}
+      {
+		return MixinType::hasData();
+      }
 
       bool update(void)
-			{
+      {
         bool retStatus{false};
 
         if(MixinType::isConnected())
@@ -35,7 +35,7 @@ namespace extension
         }
     
         return retStatus;
-			}
+      }
        
       const PortData_t* getData(void) const
       {
