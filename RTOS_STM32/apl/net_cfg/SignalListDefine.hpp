@@ -24,6 +24,30 @@ constexpr vfc::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
                             g_RTCControlMsgIndex), //IDRTCControlMsg
+        SignalLayoutTypeDef(0U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_StateRespondMsgIndex), //IDStateRespondMsg
+        SignalLayoutTypeDef(16U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_StateRespondMsgIndex), //CurrentStateSignal
+        SignalLayoutTypeDef(0U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCRespondMsgIndex), //IDRTCRespondMsg
+        SignalLayoutTypeDef(16U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCRespondMsgIndex), //HoursSignal
+        SignalLayoutTypeDef(24U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCRespondMsgIndex), //MinutesSignal
+        SignalLayoutTypeDef(32U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCRespondMsgIndex), //SecondsSignal
 
 };
 } //End of namespace NetCom

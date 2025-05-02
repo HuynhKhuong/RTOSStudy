@@ -5,7 +5,7 @@
 
 namespace NetCom{
 
-constexpr uint8_t g_totalNumberOfSignalTypeUint8{3U};
+constexpr uint8_t g_totalNumberOfSignalTypeUint8{9U};
 extern uint8_t prvSignalTypeUint8_t[g_totalNumberOfSignalTypeUint8];
 
 constexpr uint8_t g_totalNumberOfSignalTypeUint16{0U};
@@ -28,6 +28,12 @@ constexpr uint8_t prvsignalContainerMappingTable[g_totalNumberOfSignals]{
     0U,
     1U,
     2U,
+    3U,
+    4U,
+    5U,
+    6U,
+    7U,
+    8U,
 };
 
 }
