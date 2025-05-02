@@ -1,4 +1,5 @@
 #include "task3.hpp"
+#include "menu/MenuRunnable.hpp"
 
 namespace Task
 {
@@ -6,23 +7,14 @@ namespace Task
 
   void Task3Handler::task3Run(void* param)
   {
-
-    BaseType_t NotifyResult{pdFALSE};
+    task3.m_currentWakeTimeTick = xTaskGetTickCount();
+    Menu::g_myMenuRunnable_st->init();
 
     while(1)
     {
       //User code to do here
-      NotifyResult = xTaskNotifyWait( 0U, 0U, nullptr, 0U);
-      
-      if(NotifyResult == pdFALSE)
-      {
-        //User code to do here
-        vTaskDelayUntil(&task3.m_currentWakeTimeTick, task3.m_taskCycleTick);
-      }
-      else
-      {
-        vTaskDelete(nullptr);
-      }
+      Menu::g_myMenuRunnable_st->run();
+      vTaskDelayUntil(&task3.m_currentWakeTimeTick, task3.m_taskCycleTick);
     }
   }
 
