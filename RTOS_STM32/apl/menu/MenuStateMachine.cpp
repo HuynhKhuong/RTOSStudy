@@ -21,10 +21,10 @@ namespace Menu
         case static_cast<uint32_t>(EventType::SWITCH_TO_IDLE):
         case static_cast<uint32_t>(EventType::DEFAULT):
           eventType = static_cast<EventType>(m_rawEventId_u32);
-		break;
+          break;
         default:
           /*do nothing*/
-        break;
+          break;
       }
 
       m_currentState->eventListener(eventType);

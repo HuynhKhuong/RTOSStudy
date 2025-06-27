@@ -2,6 +2,6 @@
 
 namespace Port
 {
-
+  StateInfoReceiverPort g_netStateInfoReceiverPort_st{};
 }
 

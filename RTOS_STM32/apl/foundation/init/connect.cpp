@@ -3,6 +3,7 @@
 #include "menu/MenuMempool.hpp"
 #include "led/LedReceiverPort.hpp"
 #include "net/NetSenderPort.hpp"
+#include "net/NetReceiverPort.hpp"
 #include "menu/MenuReceiverPort.hpp"
 #include "menu/MenuSenderPort.hpp"
 
@@ -14,6 +15,7 @@ namespace
   {
     ///standard senderport port connection
     Port::g_menuLedSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuLedModeMempool_str));
+    Port::g_menuStateInfoSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuStateInfoMempool_str));
   }
   
 
@@ -25,6 +27,7 @@ namespace
     
     ///standard senderport/receiver port connection
     Port::g_menuLedSenderPort_st.connect(Port::g_LedModeReceiverPort_st);
+    Port::g_menuStateInfoSenderPort_st.connect(Port::g_netStateInfoReceiverPort_st);
   }
 }
 

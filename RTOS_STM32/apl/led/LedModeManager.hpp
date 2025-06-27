@@ -32,19 +32,38 @@ namespace Led
     public:
       ~LedModeAllBlink() = default;
 
+      /**
+       * @brief Returns a reference to the singleton instance of LedModeAllBlink
+       *        This function ensures that only one instance of LedModeAllBlink exists. 
+       *        It also sets the m_isFirstCalled flag to true each time the instance is retrieved.
+       * 
+       * @return Reference to the singleton LedModeAllBlink instance.
+       */
       static LedModeInf& getSingleton(void) 
       {
         static LedModeAllBlink m_mainProcessor{};
+        m_mainProcessor.m_isFirstCalled = true;
         return m_mainProcessor;
       }
 
+      
       void blink(void) override
       {
-        for (auto led : m_ledList) 
-        {
-          led.blinkLED();
-        }
+          if (m_isFirstCalled)
+          {
+              for (auto singleHandler : m_ledList)
+              {
+                  singleHandler.driveLED(0U); ///reset
+              }
+              m_isFirstCalled = false;
+          }
+
+          for (auto led : m_ledList)
+          {
+              led.blinkLED();
+          }
       }
+
 
     private:
       LedModeAllBlink() = default;
@@ -60,6 +79,8 @@ namespace Led
         {LD5_GPIO_Port, LD5_Pin},
         {LD6_GPIO_Port, LD6_Pin}
       }};
+
+      bool m_isFirstCalled{true};
   };
 
   class LedModePairBlink1: public LedModeInf
@@ -196,6 +217,15 @@ namespace Led
         static uint8_t s_currentLedIndex_u8{0U};
 
         uint8_t l_index_u8{0U};
+        if(m_isFirstCalled)
+        {
+        	for(auto singleHandler: m_ledList)
+			{
+        	  singleHandler.driveLED(0U); ///reset
+			}
+        	m_isFirstCalled = false;
+        }
+
         for(auto singleHandler: m_ledList)
         {
           if(l_index_u8 == s_currentLedIndex_u8)

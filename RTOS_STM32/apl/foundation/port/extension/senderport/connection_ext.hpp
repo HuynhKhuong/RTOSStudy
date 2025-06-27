@@ -59,7 +59,7 @@ namespace extension
           if((*itr) != nullptr)
           {
             (*itr)->disconnect();  
-        }
+          }
         }
 
         Mixin_t::cleanSubscriber();

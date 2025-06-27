@@ -7,6 +7,9 @@
 namespace mempool 
 {
   using MenuLedModeMempool = TChangeableMemPool<Port::LEDModeReqInf, 2U>;
+  using MenuStateInfoMempool = TChangeableMemPool<Port::StateInfoInf, 2U>;
+
+  extern MenuStateInfoMempool g_menuStateInfoMempool_str;
   extern MenuLedModeMempool g_menuLedModeMempool_str; 
 }
 
