@@ -83,19 +83,19 @@ namespace extension
 
       bool hasNewData(void) const
       {
-		return m_isChunkProcessed == CHUNK_NOT_PROCESSED;
+          return m_isChunkProcessed == CHUNK_NOT_PROCESSED;
       }
 
       bool hasData(void) const
       {
-		return m_isChunkProcessed != IDLE;
+          return m_isChunkProcessed != IDLE;
       }
 
       bool update(void)
       {
-		bool retStatus = xQueueReceive(m_internalTransporter, &m_internalDataContainer, 0U);
-		m_isChunkProcessed = CHUNK_PROCESSED;
-		return retStatus;
+          bool retStatus = xQueueReceive(m_internalTransporter, &m_internalDataContainer, 0U);
+          m_isChunkProcessed = CHUNK_PROCESSED;
+          return retStatus;
       }
 
     protected:
