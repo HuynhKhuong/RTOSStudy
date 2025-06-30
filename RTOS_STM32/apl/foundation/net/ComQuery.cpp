@@ -75,6 +75,8 @@ void netComTxMainFunction(void)
     portENTER_CRITICAL();
     netComSend(*messageHandler_ptr);//patch internal container into message buffer 
     netComSendWrapper(*messageHandler_ptr);//trigger sending to lowerlayers
+
+    messageHandler_ptr->setNewMessageEventFlag(false); // Clear the new message event flag after sending
     portEXIT_CRITICAL();
 
   }

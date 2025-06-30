@@ -170,7 +170,7 @@ namespace NetCom {
 
   void netComSendSignal(signalID ID, void *ptr)
   {
-    if(ptr != nullptr) return;
+    if(ptr == nullptr) return;
 
     // hook to get signal handler
     signalID tempID{ID};
@@ -192,23 +192,23 @@ namespace NetCom {
     {
       case SignalLayoutTypeDef::SignalDataType::UINT8Type:
         castingSignalType(signalInstance.m_dataType, 
-                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint8_t[index])),
-                          ptr);
+                          ptr,
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint8_t[index])));
         break;
       case SignalLayoutTypeDef::SignalDataType::UINT16Type:
         castingSignalType(signalInstance.m_dataType, 
-                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint16_t[index])),
-                          ptr);
+                          ptr,
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint16_t[index])));
         break;
       case SignalLayoutTypeDef::SignalDataType::UINT32Type:
         castingSignalType(signalInstance.m_dataType, 
-                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint32_t[index])),
-                          ptr);
+                          ptr,
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeUint32_t[index])));
         break;
       case SignalLayoutTypeDef::SignalDataType::FLOATType:
         castingSignalType(signalInstance.m_dataType, 
-                          static_cast<void*>(&(prvSignalContainer.m_signalTypeFloat[index])),
-                          ptr);
+                          ptr,
+                          static_cast<void*>(&(prvSignalContainer.m_signalTypeFloat[index])));
         break;
       case SignalLayoutTypeDef::SignalDataType::OTHERS:
         {
@@ -277,6 +277,8 @@ namespace NetCom {
     {
       netHeaderSetup(messageLayout);
       netComRequestTransmit(messageLayout.getLocalBuffer(), messageLayout.m_DLC);
+
+      netComProcessTransmitRequest(); ///\todo  to define better context to call this process function
     }
   }
 
