@@ -1,5 +1,13 @@
 #include "NetRunnable.hpp"
+#include "ComTransmit.hpp"
+#include "MenuPortIntf.hpp"
+#include "NetSenderPort.hpp"
+#include "NetReceiverPort.hpp"
+
+#include "SymbolicNames.hpp"
 #include "net/ComQuery.hpp"
+
+//extern void wrapperCallHUARTTransmit(const uint8_t*, uint8_t); // Call the wrapper function to transmit data
 
 namespace 
 {
@@ -16,12 +24,27 @@ namespace NetCom
 
   void NetRunnable::m_rxCustomerHook(void) 
   {
-    ///doing flag check and trigger sending to synchronization port
+    if(Port::g_netStateInfoReceiverPort_st.isConnected())
+    {
+      if(Port::g_netStateInfoReceiverPort_st.hasNewData())
+      {
+        uint8_t l_subStateSignalRaw_u8{0U};
+        uint8_t l_mainStateSignalRaw_u8{0U};
+
+        static_cast<void>(Port::g_netStateInfoReceiverPort_st.update());
+        const Port::StateInfoInf* l_Data_ptr = Port::g_netStateInfoReceiverPort_st.getData();
+
+        l_Data_ptr->m_SubStateSignal.getRawVal(l_subStateSignalRaw_u8);
+        l_Data_ptr->m_MainStateSignal.getRawVal(l_mainStateSignalRaw_u8);
+
+        NetCom::netComSendSignal(g_CurrentStateSignal, static_cast<void*>(&l_subStateSignalRaw_u8)); //example
+      }
+    }
   }
 
   void NetRunnable::m_txCustomerHook(void) 
   {
-	Port::g_netMenuSenderPort_st.deliver();
+	  Port::g_netMenuSenderPort_st.deliver();
   }
 
   void NetRunnable::m_customerRun(void) 

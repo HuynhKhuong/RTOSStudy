@@ -3,7 +3,6 @@
 
 #include "runnable/RunnableDefine.hpp"
 #include "ProtocolMCAL.hpp"
-#include "NetSenderPort.hpp"
 
 namespace NetCom {
 
