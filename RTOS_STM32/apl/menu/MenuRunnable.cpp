@@ -35,6 +35,7 @@ namespace Menu
   void MenuRunnable::m_txCustomerHook(void) 
   {
     Port::g_menuLedSenderPort_st.deliver();
+    Port::g_menuStateInfoSenderPort_st.deliver();
   }
 
   void MenuRunnable::m_customerRun(void) 

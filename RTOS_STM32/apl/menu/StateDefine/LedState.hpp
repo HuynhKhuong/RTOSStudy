@@ -5,6 +5,16 @@
 
 namespace Menu
 {
+
+  enum class LedStateSubEvent : uint8_t
+  {
+    LED_CMD_1 = 0U,
+    LED_CMD_2,
+    LED_CMD_3,
+    LED_CMD_4,
+    MAXIMUM_LED_CMD
+  };
+
   // Concrete States
   class LedState : public StateInf 
   {
@@ -17,7 +27,7 @@ namespace Menu
 				return &g_singleton;
 			}
 
-      void eventListener(const EventType& eventType) override; 
+      void eventListener(const uint8_t& eventType) override; 
       void run(void) override;
       void updateState(void) override;
 

@@ -22,7 +22,7 @@ namespace Menu
       {}
       ~StateInf() = default;
 
-      virtual void eventListener(const EventType& eventType) = 0;
+      virtual void eventListener(const uint8_t& eventType) = 0;
       virtual void run(void) = 0;
       virtual void updateState(void) = 0;
 

@@ -2,13 +2,16 @@
 #include "menu/EventHandlerDefine/SwitchToLedEventHandler.hpp"
 namespace Menu
 {
-  void IdleState::eventListener(const EventType& eventType) 
+  void IdleState::eventListener(const uint8_t& eventType) 
   {
     EventHandlerInf* l_eventHandler_ptr{nullptr};
+
     ///factory method + strategy 
     static_cast<void>(eventType);
+
     l_eventHandler_ptr = new SwitchToLed();
     l_eventHandler_ptr->handle();
+
     delete(l_eventHandler_ptr);  
   }
 

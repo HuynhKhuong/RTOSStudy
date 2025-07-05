@@ -17,7 +17,7 @@ namespace Menu
 				return &g_singleton;
 			}
 
-      void eventListener(const EventType& eventType) override;
+      void eventListener(const uint8_t& eventType) override;
       void run(void) override;
       void updateState(void) override;
 

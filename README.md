@@ -149,6 +149,15 @@ Message Matrix
 |Message ID|0x0|LED control| |
 |Signal|LED modes request| request modes supported from slave:0x0, 0x1, 0x2, 0x3 |size = 4 bit|
 |Message ID|0x1|RTC control| |
+|Signal|modes request|config:Time = 0, Date = 1, Enable Report = 2|2 bit| 
+|Signal Group|Time info| |24bit| 
+|Signal|Hours| |size = 8 bit|
+|Signal|Minutes| |size = 8 bit|
+|Signal|Seconds| |size = 8 bit|
+|Signal Group|Date info| |32 bit|
+|Signal|Date| |size = 8 bit|
+|Signal|Month| |size = 8 bit|
+|Signal|Year| |size = 16 bit|
 |Response from slave| | | |
 |Message ID|0x2|State Response| |
 |Signal|Current State|Include main state and substate: SNA: 0xF|size = 4 bit|
@@ -156,5 +165,8 @@ Message Matrix
 |Signal|Hours| |size = 8 bit|
 |Signal|Minutes| |size = 8 bit|
 |Signal|Seconds| |size = 8 bit|
+|Signal|Date| |size = 8 bit|
+|Signal|Month| |size = 8 bit|
+|Signal|Year| |size = 16 bit|
 
 
