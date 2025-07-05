@@ -5,7 +5,7 @@
 #ifndef SIGNALLISTDEFINE_INCLUDED_HPP
 #define SIGNALLISTDEFINE_INCLUDED_HPP
 
-#include "MessageListDefine.hpp"
+#include "ProtocolLayoutDef.hpp"
 #include "SymbolicNames.hpp"
 #include "foundation_utils.hpp"
 
@@ -24,6 +24,30 @@ constexpr vfc::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
                             g_RTCControlMsgIndex), //IDRTCControlMsg
+        SignalLayoutTypeDef(16U, 2U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCControlMsgIndex), //RTCModeReqSignal
+        SignalLayoutTypeDef(24U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCControlMsgIndex), //ReqHoursSignal
+        SignalLayoutTypeDef(32U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCControlMsgIndex), //ReqMinutesSignal
+        SignalLayoutTypeDef(40U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCControlMsgIndex), //ReqSecondsSignal
+        SignalLayoutTypeDef(48U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCControlMsgIndex), //ReqDateSignal
+        SignalLayoutTypeDef(56U, 8U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT8Type,
+                            g_RTCControlMsgIndex), //ReqMonthSignal
         SignalLayoutTypeDef(0U, 8U,
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
@@ -48,6 +72,10 @@ constexpr vfc::array<SignalLayoutTypeDef, g_numberOfSignals> g_signalConfigureTa
                             SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
                             SignalLayoutTypeDef::SignalDataType::UINT8Type,
                             g_RTCRespondMsgIndex), //SecondsSignal
+        SignalLayoutTypeDef(64U, 16U,
+                            SignalLayoutTypeDef::ByteOrderTypeDef::INTEL,
+                            SignalLayoutTypeDef::SignalDataType::UINT16Type,
+                            g_RTCControlMsgIndex) //ReqYearSignal
 
 };
 } //End of namespace NetCom

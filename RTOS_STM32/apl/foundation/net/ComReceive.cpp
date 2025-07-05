@@ -1,8 +1,8 @@
 #include <foundation_utils.hpp>
 #include "ComReceive.hpp"
 #include "SymbolicNames.hpp"
-#include "MessageListDefine.hpp"
 #include "SignalListDefine.hpp"
+#include "ContainerList.hpp"
 
 namespace NetCom {
 

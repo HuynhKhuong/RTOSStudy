@@ -1,11 +1,14 @@
 #include "ContainerListCfg.hpp"
+#include "ContainerList.hpp"
 
 namespace NetCom
 {
 
 uint8_t prvSignalTypeUint8_t[g_totalNumberOfSignalTypeUint8]{0U};
+uint16_t prvSignalTypeUint16_t[g_totalNumberOfSignalTypeUint16]{0U};
+
 InternalDataContainer prvSignalContainer(&prvSignalTypeUint8_t[0U],
-                                         nullptr, // no uint16_t signals
+                                         &prvSignalTypeUint16_t[0U], 
                                          nullptr, // no uint32_t signals
                                          nullptr, // no float signal,
                                          nullptr);

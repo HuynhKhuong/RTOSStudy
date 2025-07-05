@@ -3,6 +3,8 @@
 #include "ProtocolMCAL.hpp"
 #include "SymbolicNames.hpp"
 #include "SignalListDefine.hpp"
+#include "MessageListDefine.hpp"
+#include "ContainerList.hpp"
 
 namespace NetCom {
 
