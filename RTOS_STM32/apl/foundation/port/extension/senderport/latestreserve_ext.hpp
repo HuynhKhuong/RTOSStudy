@@ -9,7 +9,7 @@ namespace extension
   ///\details Reserve a valid mempool storage and deliver it. 
   ///         Ensure that only one chunk can be reserved at the same time. 
   ///         If a chunk has been reserved before and haven't been delivered, the current reserved chunk will be returend
-  ///
+  ///\todo To implement last-delivery chunk
   template <typename MixinType>  
   class LatestReserve: public MixinType
   {

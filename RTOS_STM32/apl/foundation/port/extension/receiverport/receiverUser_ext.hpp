@@ -17,12 +17,12 @@ namespace extension
 
       bool hasNewData(void) const
       {
-		return MixinType::hasNewData();
+		    return MixinType::hasNewData();
       }
 
       bool hasData(void) const
       {
-		return MixinType::hasData();
+		    return MixinType::hasData();
       }
 
       bool update(void)
