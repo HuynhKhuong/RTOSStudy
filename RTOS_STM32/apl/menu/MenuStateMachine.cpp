@@ -10,7 +10,7 @@ namespace Menu
     ///polling for event
     if(m_isNewEvent_bo)
     {
-      m_currentState->eventListener(static_cast<uint8_t>(m_rawEventId_u32));
+      m_currentState->eventListener(m_rawEventId_u32);
       m_isNewEvent_bo = false;
     }
 

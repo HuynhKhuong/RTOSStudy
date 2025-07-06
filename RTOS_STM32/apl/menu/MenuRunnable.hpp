@@ -5,6 +5,7 @@
 #include "runnable/RunnableDefine.hpp"
 #include "StateDefine/LedState.hpp"
 #include "StateDefine/IdleState.hpp"
+#include "StateDefine/RTCState.hpp"
 #include "menu/MenuSenderPort.hpp"
 
 ///\brief Menu runnable handles overall state management
@@ -29,6 +30,7 @@ public:
     ///perform init for all singletons
     static_cast<void>(LedState::getInstance());
     static_cast<void>(IdleState::getInstance());
+    static_cast<void>(RTCState::getInstance());
 
     g_machine_st.setState(IdleState::getInstance());
   }

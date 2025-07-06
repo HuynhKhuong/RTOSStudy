@@ -6,10 +6,12 @@
 namespace Menu
 {
 
-enum class EventType: uint8_t
+///\note This enum must adhere to the value of MainStateIdList
+enum class EventType: uint32_t
 {
   LED_STATE = 0U,
-  SWITCH_TO_IDLE = 5U,
+  RTC_STATE = 1U,
+  SWITCH_TO_IDLE = 254U,
   DEFAULT = 255U
 };
 

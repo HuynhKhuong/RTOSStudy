@@ -7,9 +7,9 @@ namespace Menu
 {
   enum class MainStateIdList: uint32_t
   {
-    MainMenu = 0U,
-    LedMenu = 1U,
-    RTCMenu = 2U
+    LedMenu = 0U,
+    RTCMenu,
+    MainMenu
   };
 
   // Abstract State
@@ -22,43 +22,13 @@ namespace Menu
       {}
       ~StateInf() = default;
 
-      virtual void eventListener(const uint8_t& eventType) = 0;
+      virtual void eventListener(const uint32_t& eventType) = 0;
       virtual void run(void) = 0;
       virtual void updateState(void) = 0;
 
     private:
       uint32_t m_uniqueId_u32; ///for debug purpose
   };
-
-//  class RTCState : public StateInf 
-//  {
-//    public:
-//      using UniqueIdType = StateInf::UniqueIdType; 
-//			
-//			static StateInf* getInstance(void)
-//			{
-//				static RTCState g_singleton{};
-//				return &g_singleton;
-//			}
-//
-//      void eventListener(const EventType& eventType) override 
-//      {
-//      }
-//
-//      void run(void) override
-//      {
-//      }
-//
-//    private:
-//      void updateState(void) override
-//      {
-//      }
-//
-//      RTCState():StateInf{static_cast<UniqueIdType>(MainStateIdList::RTCMenu)}
-//      {/*do nothing*/}
-//
-//      ~RTCState() = default;
-//  };
 
   // Context (StateMachine)
   class StateMachine 
