@@ -1,5 +1,5 @@
-#ifndef NETPORTINTF_HPP
-#define NETPORTINTF_HPP
+#ifndef MENUPORTINTF_HPP
+#define MENUPORTINTF_HPP
 
 #include "container/PortInterface.hpp"
 #include <stdint.h>

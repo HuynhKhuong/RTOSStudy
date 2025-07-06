@@ -1,5 +1,5 @@
-#ifndef NETMEMPOOL_HPP
-#define NETMEMPOOL_HPP
+#ifndef MENUMEMPOOL_HPP
+#define MENUMEMPOOL_HPP
 
 #include "mempool/mempool.hpp"
 #include "MenuPortIntf.hpp"
