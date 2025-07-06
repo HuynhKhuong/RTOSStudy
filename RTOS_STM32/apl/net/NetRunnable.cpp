@@ -46,6 +46,7 @@ namespace NetCom
   void NetRunnable::m_txCustomerHook(void) 
   {
 	  Port::g_netMenuSenderPort_st.deliver();
+    Port::g_netMenuRtcConfigSenderPort_st.deliver();
   }
 
   void NetRunnable::m_customerRun(void) 
