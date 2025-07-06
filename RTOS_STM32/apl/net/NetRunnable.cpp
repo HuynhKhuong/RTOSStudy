@@ -36,7 +36,7 @@ namespace NetCom
 
         l_Data_ptr->m_SubStateSignal.getRawVal(l_subStateSignalRaw_u8);
         l_Data_ptr->m_MainStateSignal.getRawVal(l_mainStateSignalRaw_u8);
-        l_stateSignalRaw_u8 = static_cast<uint8_t>(l_mainStateSignalRaw_u8 << 2U) || l_subStateSignalRaw_u8;
+        l_stateSignalRaw_u8 = static_cast<uint8_t>(l_mainStateSignalRaw_u8 << 2U) | l_subStateSignalRaw_u8;
 
         NetCom::netComSendSignal(g_CurrentStateSignal_u8, static_cast<void*>(&l_stateSignalRaw_u8)); 
       }

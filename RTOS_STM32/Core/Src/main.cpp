@@ -511,6 +511,7 @@ namespace portable{
     }
     else
     {
+      g_transmitLockingFlag_u16 = pdTRUE;
       HAL_UART_Transmit_IT(&huart2, dataPtr_pu8, dataSize_cu8);
     }
   }
@@ -523,7 +524,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
   {
     NetCom::ProtocolHardwareObjHandler curObj_st{nullptr, 0U};
     BaseType_t xHigherPriorityTaskWoken_u16{pdFALSE};
-    g_transmitLockingFlag_u16 = pdTRUE; //Transmit success, remove lock
+    g_transmitLockingFlag_u16 = pdFALSE; //Transmit success, remove lock
     UNUSED(xQueueReceiveFromISR(NetCom::g_MCALQueueHandler_st, &curObj_st, &xHigherPriorityTaskWoken_u16)); 
     UNUSED(curObj_st);
     if(xHigherPriorityTaskWoken_u16 == pdTRUE)
