@@ -9,24 +9,23 @@ namespace LedCom {
 class LedRunnable:public RunnableInf
 {
 public:
-  LedRunnable(void);
+    LedRunnable(void);
 
-  void run(void)
-  {
-    RunnableInf::run();
-  }
+    void run(void)
+    {
+        RunnableInf::run();
+    }
 
-  void init(void) override
-  {
-  }
+    void init(void) override
+    {/*do nothing*/}
 
 
 protected:
-  void m_rxCustomerHook(void) override;
-  void m_txCustomerHook(void) override;
-  void m_customerRun(void) override;
+    void m_rxCustomerHook(void) override;
+    void m_txCustomerHook(void) override;
+    void m_customerRun(void) override;
 
-  Led::LedManager m_ledModeManager{};
+    Led::LedManager m_ledModeManager{};
 };
 
 extern LedRunnable* g_myLedRunnable_st;

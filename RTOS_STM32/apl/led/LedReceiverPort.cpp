@@ -2,6 +2,6 @@
 
 namespace Port
 {
-  LedModuleReceiverPort g_LedModeReceiverPort_st{};
+    LedModuleReceiverPort g_LedModeReceiverPort_st{};
 }
 

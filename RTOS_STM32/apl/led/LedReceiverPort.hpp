@@ -6,8 +6,8 @@
 
 namespace Port
 {
-  using LedModuleReceiverPort = ReceiverPortUserType<LEDModeReqInf>;
-  extern LedModuleReceiverPort g_LedModeReceiverPort_st;
+    using LedModuleReceiverPort = ReceiverPortUserType<LEDModeReqInf>;
+    extern LedModuleReceiverPort g_LedModeReceiverPort_st;
 }
 
 #endif
