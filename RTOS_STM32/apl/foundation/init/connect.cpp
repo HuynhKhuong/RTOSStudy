@@ -7,36 +7,38 @@
 #include "net/NetReceiverPort.hpp"
 #include "menu/MenuReceiverPort.hpp"
 #include "menu/MenuSenderPort.hpp"
-
+#include "rtc/RTCReceiverPort.hpp"
 #include "task3.hpp"
 
 namespace
 {
-  void mempoolConnect(void)
-  {
-    ///standard senderport port connection
-    Port::g_menuLedSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuLedModeMempool_str));
-    Port::g_menuStateInfoSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuStateInfoMempool_str));
-    Port::g_netMenuRtcConfigSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_rtcReqInfMempool_str));
-  }
+    void mempoolConnect(void)
+    {
+        ///standard senderport port connection
+        Port::g_menuLedSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuLedModeMempool_str));
+        Port::g_menuStateInfoSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuStateInfoMempool_str));
+        Port::g_netMenuRtcConfigSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_rtcReqInfMempool_str));
+        Port::g_menuRTCConfigDataSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuRTCConfigDataMempool_str));
+    }
   
 
-  void portConnect(void)
-  {
-    ///for lightweight receiver port, connect directly to task handler
-    Port::g_menuReceiverPort_st.connect(Task::task3.getTaskHandle());
-    Port::g_netMenuSenderPort_st.connect(Port::g_menuReceiverPort_st);
-    
-    ///standard senderport/receiver port connection
-    Port::g_menuLedSenderPort_st.connect(Port::g_LedModeReceiverPort_st);
-    Port::g_menuStateInfoSenderPort_st.connect(Port::g_netStateInfoReceiverPort_st);
-    Port::g_netMenuRtcConfigSenderPort_st.connect(Port::g_menuRTCConfigReceiverPort_st);
-  }
+    void portConnect(void)
+    {
+        ///for lightweight receiver port, connect directly to task handler
+        Port::g_menuReceiverPort_st.connect(Task::task3.getTaskHandle());
+        Port::g_netMenuSenderPort_st.connect(Port::g_menuReceiverPort_st);
+
+        ///standard senderport/receiver port connection
+        Port::g_menuLedSenderPort_st.connect(Port::g_LedModeReceiverPort_st);
+        Port::g_menuStateInfoSenderPort_st.connect(Port::g_netStateInfoReceiverPort_st);
+        Port::g_netMenuRtcConfigSenderPort_st.connect(Port::g_menuRTCConfigReceiverPort_st);
+        Port::g_menuRTCConfigDataSenderPort_st.connect(Port::g_rtcConfigDataReceiverPort_st);
+    }
 }
 
 void connect(void)
 {
-  mempoolConnect();
-  portConnect();
+    mempoolConnect();
+    portConnect();
 }
 

@@ -15,9 +15,10 @@
  */
 void init(void)
 {
-  Port::g_menuStateInfoSenderPort_st.init();
-  Port::g_menuLedSenderPort_st.init();
-  Port::g_netMenuRtcConfigSenderPort_st.init();
+    Port::g_menuStateInfoSenderPort_st.init();
+    Port::g_menuLedSenderPort_st.init();
+    Port::g_netMenuRtcConfigSenderPort_st.init();
+    Port::g_menuRTCConfigDataSenderPort_st.init();
 }
 
 
