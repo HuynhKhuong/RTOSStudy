@@ -15,34 +15,34 @@
 
 namespace Menu
 {
-class MenuRunnable:public RunnableInf
-{
-public:
-  MenuRunnable(void);
+    class MenuRunnable:public RunnableInf
+    {
+    public:
+        MenuRunnable(void);
 
-  void run(void)
-  {
-    RunnableInf::run();
-  }
+        void run(void)
+        {
+            RunnableInf::run();
+        }
 
-  void init(void) override
-  {
-    ///perform init for all singletons
-    static_cast<void>(LedState::getInstance());
-    static_cast<void>(IdleState::getInstance());
-    static_cast<void>(RTCState::getInstance());
+        void init(void) override
+        {
+            ///perform init for all singletons
+            static_cast<void>(LedState::getInstance());
+            static_cast<void>(IdleState::getInstance());
+            static_cast<void>(RTCState::getInstance());
 
-    g_machine_st.setState(IdleState::getInstance());
-  }
+            g_machine_st.setState(IdleState::getInstance());
+        }
 
 
-protected:
-  void m_rxCustomerHook(void) override;
-  void m_txCustomerHook(void) override;
-  void m_customerRun(void) override;
-};
+    protected:
+        void m_rxCustomerHook(void) override;
+        void m_txCustomerHook(void) override;
+        void m_customerRun(void) override;
+    };
 
-extern MenuRunnable* g_myMenuRunnable_st;
+    extern MenuRunnable* g_myMenuRunnable_st;
 
 }//end of namespace MenuCom
 
