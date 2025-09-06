@@ -17,6 +17,8 @@ namespace
                 return Menu::RTCConfigOption::TIMECONFIG;
             case static_cast<uint8_t>(Menu::RTCConfigOption::DATECONFIG):
                 return Menu::RTCConfigOption::DATECONFIG;
+            case static_cast<uint8_t>(Menu::RTCConfigOption::REPORTREQUEST):
+                return Menu::RTCConfigOption::REPORTREQUEST;
             default:
                 return Menu::RTCConfigOption::MAXCONFIG;
         }
@@ -54,25 +56,29 @@ namespace Menu
                         {
                             l_localEventHandler_ptr->setRTCConfigMode(configOption);
                         }
-                        {
-                            uint8_t retrieveDateVal_u8{ 0U };
-                            uint8_t retrieveMonthVal_u8{ 0U };
-                            uint16_t retrieveYearVal_u16{ 0U };
-                            l_RTCReqInf_pst->m_year.getPhysVal(retrieveYearVal_u16);
-                            l_RTCReqInf_pst->m_month.getPhysVal(retrieveMonthVal_u8);
-                            l_RTCReqInf_pst->m_day.getPhysVal(retrieveDateVal_u8);
 
-                            l_localEventHandler_ptr->setRTCDateInfo(DateInfo{ retrieveYearVal_u16, retrieveMonthVal_u8, retrieveDateVal_u8 });
-                        }
+                        if(configOption != RTCConfigOption::REPORTREQUEST)
                         {
-                            uint8_t retrieveSecondsVal_u8{ 0U };
-                            uint8_t retrieveMinuteVal_u8{ 0U };
-                            uint8_t retrieveHourVal_u8{ 0U };
-                            l_RTCReqInf_pst->m_hour.getPhysVal(retrieveHourVal_u8);
-                            l_RTCReqInf_pst->m_minute.getPhysVal(retrieveMinuteVal_u8);
-                            l_RTCReqInf_pst->m_second.getPhysVal(retrieveSecondsVal_u8);
+                            {
+                                uint8_t retrieveDateVal_u8{ 0U };
+                                uint8_t retrieveMonthVal_u8{ 0U };
+                                uint16_t retrieveYearVal_u16{ 0U };
+                                l_RTCReqInf_pst->m_year.getPhysVal(retrieveYearVal_u16);
+                                l_RTCReqInf_pst->m_month.getPhysVal(retrieveMonthVal_u8);
+                                l_RTCReqInf_pst->m_day.getPhysVal(retrieveDateVal_u8);
 
-                            l_localEventHandler_ptr->setRTCTimeInfo(TimeInfo{ retrieveHourVal_u8, retrieveMinuteVal_u8, retrieveSecondsVal_u8 });
+                                l_localEventHandler_ptr->setRTCDateInfo(DateInfo{ retrieveYearVal_u16, retrieveMonthVal_u8, retrieveDateVal_u8 });
+                            }
+                            {
+                                uint8_t retrieveSecondsVal_u8{ 0U };
+                                uint8_t retrieveMinuteVal_u8{ 0U };
+                                uint8_t retrieveHourVal_u8{ 0U };
+                                l_RTCReqInf_pst->m_hour.getPhysVal(retrieveHourVal_u8);
+                                l_RTCReqInf_pst->m_minute.getPhysVal(retrieveMinuteVal_u8);
+                                l_RTCReqInf_pst->m_second.getPhysVal(retrieveSecondsVal_u8);
+
+                                l_localEventHandler_ptr->setRTCTimeInfo(TimeInfo{ retrieveHourVal_u8, retrieveMinuteVal_u8, retrieveSecondsVal_u8 });
+                            }
                         }
                         l_eventHandler_ptr = static_cast<EventHandlerInf*>(l_localEventHandler_ptr);
                     }
