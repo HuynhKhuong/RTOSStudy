@@ -2,6 +2,7 @@
 
 namespace Port
 {
-  StateInfoReceiverPort g_netStateInfoReceiverPort_st{};
+    StateInfoReceiverPort g_netStateInfoReceiverPort_st{};
+    TimeDataReceiverPort g_netTimeDataReceiverPort_st{};
 }
 

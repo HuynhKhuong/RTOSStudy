@@ -4,27 +4,27 @@
 #include "runnable/RunnableDefine.hpp"
 #include "ProtocolMCAL.hpp"
 
-namespace NetCom {
-
-class NetRunnable:public RunnableInf
+namespace NetCom
 {
-public:
-  NetRunnable(void);
 
-  void init(void) override
-  {
-    netComTransmitInfrasInit();
-  }
+    class NetRunnable : public RunnableInf
+    {
+    public:
+        NetRunnable(void);
 
-protected:
-  void m_rxCustomerHook(void) override;
-  void m_txCustomerHook(void) override;
-  void m_customerRun(void) override;
-};
+        void init(void) override
+        {
+            netComTransmitInfrasInit();
+        }
 
-extern RunnableInf* g_myNetRunnable_st;
+    protected:
+        void m_rxCustomerHook(void) override;
+        void m_txCustomerHook(void) override;
+        void m_customerRun(void) override;
+    };
 
-}//end of namespace NetCom
+    extern RunnableInf* g_myNetRunnable_st;
+
+} // end of namespace NetCom
 
 #endif
-
