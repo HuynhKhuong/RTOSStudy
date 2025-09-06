@@ -17,7 +17,8 @@ public:
      * \output None
      * \note Used by RTCMonitor to delegate DATECONFIG events.
      */
-    explicit DateConfigEventHandler(ComplexDriver::RTCHandler* handler);
+    explicit DateConfigEventHandler(ComplexDriver::RTCHandler* handler):m_rtcHandler{handler}
+    {}
 
     /**
      * \brief Handle DATECONFIG RTC configuration event.

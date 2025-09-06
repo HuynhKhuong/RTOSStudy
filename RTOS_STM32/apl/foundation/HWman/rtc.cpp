@@ -26,9 +26,9 @@ namespace
 } //anonymous namespace
 namespace  ComplexDriver{
 
-    RTCHandler* getRTCHandlerInstance(uint8_t l_instanceidx_u8)
+    RTCHandler* getRTCHandlerInstance(RTCInstanceIdx idx)
     {
-        return findHandler(l_instanceidx_u8);
+        return findHandler(static_cast<uint8_t>(idx));
     }
 }
 
