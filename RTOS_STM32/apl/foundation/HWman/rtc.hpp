@@ -8,6 +8,14 @@ extern "C"
 
 namespace ComplexDriver
 {
+    ///\brief RTC instance index enum for handler selection
+    enum class RTCInstanceIdx : uint8_t
+    {
+        RTC_0 = 0U,
+        // Add more if hardware supports multiple RTCs
+        MAX_RTC
+    };
+
     class RTCHandler
     {
     public:
@@ -45,7 +53,10 @@ namespace ComplexDriver
          */
         bool setDate(const RTC_DateTypeDef& date, uint32_t format = RTC_FORMAT_BIN)
         {
+            RTC_DateTypeDef safeDate = date;
             if(m_hrtc == nullptr) return false;
+            
+            safeDate.Year = safeDate.Year % 100; // Always store only the last two digits of the year
             return (HAL_RTC_SetDate(m_hrtc, const_cast<RTC_DateTypeDef*>(&date), format) == HAL_OK);
         }
 
@@ -81,7 +92,7 @@ namespace ComplexDriver
 
     ///\brief factory method to handle and deliver RTCHandler instance
     ///\note  if no handler found, nullptr is returned
-    RTCHandler* getRTCHandlerInstance(uint8_t l_instanceidx_u8=0U);
+    RTCHandler* getRTCHandlerInstance(RTCInstanceIdx idx = RTCInstanceIdx::RTC_0);
 }//end of namespace ComplexDriver
 
 #endif

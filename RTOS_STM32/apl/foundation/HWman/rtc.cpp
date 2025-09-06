@@ -1,5 +1,6 @@
 #include "rtc.hpp"
 #include "utils/foundation_utils.hpp"
+#include <cstdint>
 
 extern RTC_HandleTypeDef hrtc;
 
@@ -9,7 +10,8 @@ namespace
     ComplexDriver::RTCHandler rtcHandler_1{&hrtc};
 
     ///\brief central storage for all RTCHandler instances
-    constexpr uint16_t maxOfPeripherals{1U};
+    constexpr uint16_t maxOfPeripherals{static_cast<uint16_t>(ComplexDriver::RTCInstanceIdx::MAX_RTC)};
+
     vfc::array<ComplexDriver::RTCHandler*, maxOfPeripherals> s_centralHandlerStorage
     {
         {&rtcHandler_1}
