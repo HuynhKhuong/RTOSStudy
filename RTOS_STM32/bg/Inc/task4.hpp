@@ -5,26 +5,18 @@
 
 namespace Task
 {
-  void taskRun(void* param);
-
-  class Task4Handler: public TaskHandler 
-  {
+    class Task4Handler : public TaskHandler 
+    {
     public: 
-      Task4Handler(): TaskHandler{convertTickFromMs(10U)} //task cycle 10ms
-      { }
+        Task4Handler() : TaskHandler{convertTickFromMs(1000U)} {}
+        explicit Task4Handler(UBaseType_t taskPriority) : TaskHandler{convertTickFromMs(1000U), taskPriority, "Task-4"} {}
 
-      explicit Task4Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(10U), taskPriority, "Task-4"}
-      { }
+        void run(void* param) override;
+        static void task4Run(void* param);
+    };
 
-      void run(void* param) override;
-      static void task4Run(void* param);
+    extern Task4Handler task4; 
 
-    private:
-      UserInputHandler m_userInputHandler{GPIOA, GPIO_PIN_0};
-  };
-
-  extern Task4Handler task4; 
-
-}//End of namespace Task
+} //End of namespace Task
 
 #endif
