@@ -8,6 +8,8 @@
 #include "menu/MenuReceiverPort.hpp"
 #include "menu/MenuSenderPort.hpp"
 #include "rtc/RTCReceiverPort.hpp"
+#include "rtc/RTCSenderPort.hpp"
+#include "rtc/RTCMempool.hpp"
 #include "task3.hpp"
 
 namespace
@@ -19,6 +21,7 @@ namespace
         Port::g_menuStateInfoSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuStateInfoMempool_str));
         Port::g_netMenuRtcConfigSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_rtcReqInfMempool_str));
         Port::g_menuRTCConfigDataSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_menuRTCConfigDataMempool_str));
+        Port::g_rtcTimeDataSenderPort_st.connectMempool(static_cast<mempool::TChangeableMemPoolBase*>(&mempool::g_timeDataMempool_st));
     }
   
 
@@ -33,6 +36,7 @@ namespace
         Port::g_menuStateInfoSenderPort_st.connect(Port::g_netStateInfoReceiverPort_st);
         Port::g_netMenuRtcConfigSenderPort_st.connect(Port::g_menuRTCConfigReceiverPort_st);
         Port::g_menuRTCConfigDataSenderPort_st.connect(Port::g_rtcConfigDataReceiverPort_st);
+        Port::g_rtcTimeDataSenderPort_st.connect(Port::g_netTimeDataReceiverPort_st);
     }
 }
 

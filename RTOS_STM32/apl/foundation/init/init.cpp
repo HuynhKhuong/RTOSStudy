@@ -1,6 +1,7 @@
 #include "init.hpp"
 #include "menu/MenuSenderPort.hpp"
 #include "net/NetSenderPort.hpp"
+#include "rtc/RTCSenderPort.hpp"
 
 /**
  * \brief Initializes the application ports.
@@ -19,6 +20,7 @@ void init(void)
     Port::g_menuLedSenderPort_st.init();
     Port::g_netMenuRtcConfigSenderPort_st.init();
     Port::g_menuRTCConfigDataSenderPort_st.init();
+    Port::g_rtcTimeDataSenderPort_st.init();
 }
 
 
