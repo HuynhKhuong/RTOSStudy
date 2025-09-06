@@ -11,6 +11,7 @@ namespace Menu
     {
         TIMECONFIG = 0U,
         DATECONFIG,
+        REPORTREQUEST,
         MAXCONFIG
     };
 
