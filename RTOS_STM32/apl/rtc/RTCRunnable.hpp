@@ -3,27 +3,25 @@
 
 #include "runnable/RunnableDefine.hpp"
 
-namespace RTC{
+namespace RTC_Handler
+{
 
 class RTCRunnable:public RunnableInf
 {
 public:
-  RTCRunnable(void);
+    RTCRunnable(void);
 
-  void run(void)
-  {
-    RunnableInf::run();
-  }
+    void run(void)
+    {
+        RunnableInf::run();
+    }
 
-  void init(void) override
-  {
-  }
-
+    void init(void) override;
 
 protected:
-  void m_rxCustomerHook(void) override;
-  void m_txCustomerHook(void) override;
-  void m_customerRun(void) override;
+    void m_rxCustomerHook(void) override;
+    void m_txCustomerHook(void) override;
+    void m_customerRun(void) override;
 
 };
 

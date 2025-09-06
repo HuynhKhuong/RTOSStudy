@@ -16,10 +16,11 @@ public:
      * \input idx RTC instance index (default: ComplexDriver::RTCInstanceIdx::RTC_0)
      * \output None
      * \note Constructor is called when RTCMonitor is instantiated in the runnable context.
-     */
-    explicit RTCMonitor(ComplexDriver::RTCInstanceIdx idx = ComplexDriver::RTCInstanceIdx::RTC_0);
+     *
+    */
+    RTCMonitor()=default;
 
-    /**
+    /*
      * \brief Initialize the RTC handler for the specified instance.
      * \details Retrieves and stores the RTC handler pointer for the given index.
      * \input idx RTC instance index (default: ComplexDriver::RTCInstanceIdx::RTC_0)
@@ -46,9 +47,16 @@ public:
      */
     void onEvent(const Port::RTCConfigDataInf& configData);
 
-private:
-    ComplexDriver::RTCHandler* m_rtcHandler;
+    void enableReportRequest() { m_reportRequested = true; }
+    void disableReportRequest() { m_reportRequested = false; }
 
+private:
+    ComplexDriver::RTCHandler* m_rtcHandler{nullptr};
+    RTC_TimeTypeDef m_lastTime{};
+    RTC_DateTypeDef m_lastDate{};
+    bool m_reportRequested{false};
 };
-}
+
+} ///end of namespace RTC_Handler
+
 #endif
