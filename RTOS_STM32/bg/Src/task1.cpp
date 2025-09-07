@@ -14,7 +14,7 @@ namespace Task
         
         while(1)
         {
-            NetCom::g_myNetRunnable_st->run();
+            //NetCom::g_myNetRunnable_st->run();
             vTaskDelayUntil(&task1.m_currentWakeTimeTick, task1.m_taskCycleTick);
         }
     }

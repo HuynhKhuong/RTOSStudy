@@ -11,7 +11,7 @@ namespace Task
         LedCom::g_myLedRunnable_st->init();
         while(1)
         {
-            LedCom::g_myLedRunnable_st->run();
+            //LedCom::g_myLedRunnable_st->run();
             vTaskDelayUntil(&task2.m_currentWakeTimeTick, task2.m_taskCycleTick);
         }
     }

@@ -170,3 +170,10 @@ Message Matrix
 |Signal|Year| |size = 16 bit|
 
 
+### EXERCISE 7
+(Binary Semaphore to synchronise between 2 tasks)
+Task 1: Manager Task
+Task 2: Employee Task
+Manager Task creates ticket Id -> Queue
+Manager Task signal Employee Task
+Employee Task process ticket Id
