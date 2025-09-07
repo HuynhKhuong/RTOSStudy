@@ -117,3 +117,56 @@ task 2 with priority 3: toogle GREED LED with 1s duration
 ISR to task notification using direct notification API
 priority between 2 tasks are exchanged
 
+### EXERCISE 6
+takes input from user via UART and handles LED & RTC (of microcontroller)
+1. Process user sent commands over UART 
+2. FreeRTOS queues handling
+3. FreeRTOS software timers
+
+Requires: 
+- User's PC (master) application
+- Communication protocol
+- Communication stack implementation
+- Actuator (LEDs & RTC)
+
+#### Communication Stack
+Communication stack is taken from repo: https://github.com/HuynhKhuong/EEPROM_24C04
+
+communication is intepreted in terms of messages comprising below format
+
+|Byte 0|Byte 1|Byte 2|Byte 3|
+|---|---|---|---|
+|Message ID|DLC (includes Address & Data & PCI bytes)|Data|endofframe(*)|
+
++ Address field is considered as a signal in PDU layout (would contain: start bit, bit length, and byte order rule) [x]
++ Data  field  is considered as a signal in PDU layout (woud contain: start bit, byte order rule) [x]
++ Add DLC Field (Data length code) [x]
++ The layout must be agreed and preconfigured between master and slave [x]
+
+Message Matrix
+|Items|Value|Functionality|Comment|
+|---|---|---|---|
+|Message ID|0x0|LED control| |
+|Signal|LED modes request| request modes supported from slave:0x0, 0x1, 0x2, 0x3 |size = 4 bit|
+|Message ID|0x1|RTC control| |
+|Signal|modes request|config:Time = 0, Date = 1, Enable Report = 2|2 bit| 
+|Signal Group|Time info| |24bit| 
+|Signal|Hours| |size = 8 bit|
+|Signal|Minutes| |size = 8 bit|
+|Signal|Seconds| |size = 8 bit|
+|Signal Group|Date info| |32 bit|
+|Signal|Date| |size = 8 bit|
+|Signal|Month| |size = 8 bit|
+|Signal|Year| |size = 16 bit|
+|Response from slave| | | |
+|Message ID|0x2|State Response| |
+|Signal|Current State|Include main state and substate: SNA: 0xF|size = 4 bit|
+|Message ID|0x3|RTC response| |
+|Signal|Hours| |size = 8 bit|
+|Signal|Minutes| |size = 8 bit|
+|Signal|Seconds| |size = 8 bit|
+|Signal|Date| |size = 8 bit|
+|Signal|Month| |size = 8 bit|
+|Signal|Year| |size = 16 bit|
+
+

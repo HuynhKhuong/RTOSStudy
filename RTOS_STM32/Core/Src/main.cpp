@@ -19,19 +19,27 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "SEGGER_SYSVIEW_FreeRTOS.h"
-#include "portmacro.h"
-#include "projdefs.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "stm32f4xx_hal_uart.h"
 #include "usb_host.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include <stdlib.h>
+
 #include "task.hpp"
+#include "ProtocolMCAL.hpp"
+#include "foundation_utils.hpp"
+#include "init/init.hpp"
+#include "init/connect.hpp"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+extern RTC_HandleTypeDef hrtc;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -49,15 +57,28 @@ I2C_HandleTypeDef hi2c1;
 
 I2S_HandleTypeDef hi2s3;
 
+RTC_HandleTypeDef hrtc;
+
 SPI_HandleTypeDef hspi1;
 
+extern UART_HandleTypeDef huart2;
+UART_HandleTypeDef huart2{};
+
 /* USER CODE BEGIN PV */
+constexpr uint16_t g_userSize_cu8{1000U};
+
 static BaseType_t taskCreationResult{pdFAIL};
+static uint8_t g_userData[g_userSize_cu8]{0U};
 
 namespace Task{
   extern bool isInputClicked;
   bool isInputClicked{false};
 } //end of namespace Task
+  
+namespace{
+/*NetCom::NetRunnable g_userNetRunnable_st{};*/
+BaseType_t g_transmitLockingFlag_u16{pdFALSE};
+}//anonymous namespace
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -66,6 +87,8 @@ static void MX_GPIO_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_I2S3_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_USART2_UART_Init(void);
+static void MX_RTC_Init(void);
 void MX_USB_HOST_Process(void);
 
 /* USER CODE BEGIN PFP */
@@ -107,20 +130,28 @@ int main(void)
   MX_I2C1_Init();
   MX_I2S3_Init();
   MX_SPI1_Init();
-  //MX_USB_HOST_Init();
+  /*MX_USB_HOST_Init();*/
+  MX_USART2_UART_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  //Enabel Cycle Counter of CPU for timestamp trackign
+
+  ///Receive an amount of data in interrupt mode till either the expected number of data is received or an IDLE event occurs.
+  static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
+
+  ///Enabel Cycle Counter of CPU for timestamp trackign
   DWT_Type * const cortexM4DWTReg{DWT};
   cortexM4DWTReg->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
   SEGGER_SYSVIEW_Conf();
   SEGGER_SYSVIEW_Start();
+
   taskCreationResult = Task::createTasks();
+  init();       /* init for inter-task communication entities */
+  connect();    /* connect inter-task communication entities */
 
   vTaskStartScheduler();
-  /* USER CODE END 2 */
-
   ///PC returned to main, scheduler start is failed
+  /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -151,8 +182,9 @@ void SystemClock_Config(void)
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_LSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.LSIState = RCC_LSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   RCC_OscInitStruct.PLL.PLLM = 8;
@@ -248,6 +280,70 @@ static void MX_I2S3_Init(void)
 }
 
 /**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+  RTC_TimeTypeDef sTime = {0};
+  RTC_DateTypeDef sDate = {0};
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.HourFormat = RTC_HOURFORMAT_12;
+  hrtc.Init.AsynchPrediv = 127;
+  hrtc.Init.SynchPrediv = 255;
+  hrtc.Init.OutPut = RTC_OUTPUT_DISABLE;
+  hrtc.Init.OutPutPolarity = RTC_OUTPUT_POLARITY_HIGH;
+  hrtc.Init.OutPutType = RTC_OUTPUT_TYPE_OPENDRAIN;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN Check_RTC_BKUP */
+
+  /* USER CODE END Check_RTC_BKUP */
+
+  /** Initialize RTC and set the Time and Date
+  */
+  sTime.Hours = 0x1;
+  sTime.Minutes = 0x0;
+  sTime.Seconds = 0x0;
+  sTime.TimeFormat = RTC_HOURFORMAT12_AM;
+  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+  sDate.Month = RTC_MONTH_JANUARY;
+  sDate.Date = 0x1;
+  sDate.Year = 0x0;
+
+  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
+
+}
+
+/**
   * @brief SPI1 Initialization Function
   * @param None
   * @retval None
@@ -282,6 +378,39 @@ static void MX_SPI1_Init(void)
   /* USER CODE BEGIN SPI1_Init 2 */
 
   /* USER CODE END SPI1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX_RX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
 
 }
 
@@ -379,10 +508,9 @@ static void MX_GPIO_Init(void)
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 6, 0);
-  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+  //HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
-  HAL_NVIC_DisableIRQ(EXTI0_IRQn);
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
@@ -398,6 +526,22 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     portEXIT_CRITICAL();
   }
   traceISR_EXIT();
+}
+
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+  if(huart == &huart2)
+  {
+	///work around to use malloc
+  
+    uint8_t* l_receivedUserData = new uint8_t[Size]{};
+    memcpy(static_cast<void*>(l_receivedUserData), 
+           static_cast<const void*>(&g_userData), 
+           Size);
+    NetCom::netComReceive(l_receivedUserData, Size);
+    delete [](l_receivedUserData);
+    static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
+  }
 }
 /* USER CODE END 4 */
 
@@ -422,6 +566,42 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   /* USER CODE END Callback 1 */
 }
 
+namespace portable{
+  inline bool netComIsTransmitInProgress(void)
+  {
+    return (g_transmitLockingFlag_u16 == pdTRUE); 
+  }
+
+  void userDefinedTxTransmit(const uint8_t* dataPtr_pu8, const uint8_t dataSize_cu8)
+  {
+    if(netComIsTransmitInProgress()) 
+    {
+      ///do nothing
+    }
+    else
+    {
+      g_transmitLockingFlag_u16 = pdTRUE;
+      HAL_UART_Transmit_IT(&huart2, dataPtr_pu8, dataSize_cu8);
+    }
+  }
+
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if(huart == &huart2)
+  {
+    NetCom::ProtocolHardwareObjHandler curObj_st{nullptr, 0U};
+    BaseType_t xHigherPriorityTaskWoken_u16{pdFALSE};
+    g_transmitLockingFlag_u16 = pdFALSE; //Transmit success, remove lock
+    UNUSED(xQueueReceiveFromISR(NetCom::g_MCALQueueHandler_st, &curObj_st, &xHigherPriorityTaskWoken_u16)); 
+    UNUSED(curObj_st);
+    if(xHigherPriorityTaskWoken_u16 == pdTRUE)
+    {
+      taskYIELD(); ///preemption for higher priority task woken by xQueueReceiveFromISR() 
+    }
+  } 
+}
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None

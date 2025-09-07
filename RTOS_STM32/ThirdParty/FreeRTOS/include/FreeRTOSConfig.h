@@ -47,7 +47,7 @@
 #endif
 
 #define configUSE_PREEMPTION			1
-#define configUSE_IDLE_HOOK				1
+#define configUSE_IDLE_HOOK				0
 #define configUSE_TICK_HOOK				0
 #define configCPU_CLOCK_HZ				( SystemCoreClock )
 #define configTICK_RATE_HZ				( ( TickType_t ) 1000 )
@@ -66,7 +66,8 @@
 #define configUSE_APPLICATION_TASK_TAG	0
 #define configUSE_COUNTING_SEMAPHORES	1
 #define configGENERATE_RUN_TIME_STATS	0
-
+#define configSUPPORT_STATIC_ALLOCATION 0
+#define configSUPPORT_DYNAMIC_ALLOCATION 1
 
 /* Software timer definitions. */
 #define configUSE_TIMERS				1
