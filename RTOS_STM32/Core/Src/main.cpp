@@ -34,17 +34,28 @@
 #include "foundation_utils.hpp"
 #include "init/init.hpp"
 #include "init/connect.hpp"
-
+#include "semphr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 extern RTC_HandleTypeDef hrtc;
+extern QueueHandle_t g_taskIdQueueCont_ptr;
+extern xSemaphoreHandle g_taskIdSemprSignal_ptr;
+
+using TaskIdType = uint8_t;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+namespace
+{
+    constexpr BaseType_t g_taskIdQueueLength_u8{2U};
+    constexpr UBaseType_t g_taskIdSize{sizeof(TaskIdType)};
+}
 
+QueueHandle_t g_taskIdQueueCont_ptr{nullptr};
+xSemaphoreHandle g_taskIdSemprSignal_ptr{nullptr};
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -106,63 +117,68 @@ void MX_USB_HOST_Process(void);
 int main(void)
 {
 
-  /* USER CODE BEGIN 1 */
-  /* USER CODE END 1 */
+    /* USER CODE BEGIN 1 */
+    /* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+    /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+    HAL_Init();
 
-  /* USER CODE BEGIN Init */
+    /* USER CODE BEGIN Init */
+    g_taskIdQueueCont_ptr = xQueueCreate(g_taskIdQueueLength_u8, g_taskIdSize);
+    g_taskIdSemprSignal_ptr = xSemaphoreCreateBinary();
+    /* USER CODE END Init */
 
-  /* USER CODE END Init */
+    /* Configure the system clock */
+    SystemClock_Config();
 
-  /* Configure the system clock */
-  SystemClock_Config();
+    /* USER CODE BEGIN SysInit */
 
-  /* USER CODE BEGIN SysInit */
+    /* USER CODE END SysInit */
 
-  /* USER CODE END SysInit */
+    /* Initialize all configured peripherals */
+    MX_GPIO_Init();
+    MX_I2C1_Init();
+    MX_I2S3_Init();
+    MX_SPI1_Init();
+    /*MX_USB_HOST_Init();*/
+    MX_USART2_UART_Init();
+    MX_RTC_Init();
+    /* USER CODE BEGIN 2 */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_I2C1_Init();
-  MX_I2S3_Init();
-  MX_SPI1_Init();
-  /*MX_USB_HOST_Init();*/
-  MX_USART2_UART_Init();
-  MX_RTC_Init();
-  /* USER CODE BEGIN 2 */
+    ///Receive an amount of data in interrupt mode till either the expected number of data is received or an IDLE event occurs.
+    static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
 
-  ///Receive an amount of data in interrupt mode till either the expected number of data is received or an IDLE event occurs.
-  static_cast<void>(HAL_UARTEx_ReceiveToIdle_IT(&huart2, g_userData, g_userSize_cu8));
+    ///Enabel Cycle Counter of CPU for timestamp trackign
+    DWT_Type * const cortexM4DWTReg{DWT};
+    cortexM4DWTReg->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
-  ///Enabel Cycle Counter of CPU for timestamp trackign
-  DWT_Type * const cortexM4DWTReg{DWT};
-  cortexM4DWTReg->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+    SEGGER_SYSVIEW_Conf();
+    SEGGER_SYSVIEW_Start();
 
-  SEGGER_SYSVIEW_Conf();
-  SEGGER_SYSVIEW_Start();
+    if((g_taskIdQueueCont_ptr != nullptr) && (g_taskIdSemprSignal_ptr != nullptr))
+    {   
+        taskCreationResult = Task::createTasks();
+        init();       /* init for inter-task communication entities */
+        connect();    /* connect inter-task communication entities */
 
-  taskCreationResult = Task::createTasks();
-  init();       /* init for inter-task communication entities */
-  connect();    /* connect inter-task communication entities */
+        vTaskStartScheduler();
+    }
 
-  vTaskStartScheduler();
-  ///PC returned to main, scheduler start is failed
-  /* USER CODE END 2 */
+    ///PC returned to main, scheduler start is failed
+    /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    /* Infinite loop */
+    /* USER CODE BEGIN WHILE */
+    while (1)
+    {
     /* USER CODE END WHILE */
     //MX_USB_HOST_Process();
 
     /* USER CODE BEGIN 3 */
-  }
-  /* USER CODE END 3 */
+    }
+    /* USER CODE END 3 */
 }
 
 /**
@@ -591,15 +607,15 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
   if(huart == &huart2)
   {
-    NetCom::ProtocolHardwareObjHandler curObj_st{nullptr, 0U};
-    BaseType_t xHigherPriorityTaskWoken_u16{pdFALSE};
-    g_transmitLockingFlag_u16 = pdFALSE; //Transmit success, remove lock
-    UNUSED(xQueueReceiveFromISR(NetCom::g_MCALQueueHandler_st, &curObj_st, &xHigherPriorityTaskWoken_u16)); 
-    UNUSED(curObj_st);
-    if(xHigherPriorityTaskWoken_u16 == pdTRUE)
-    {
-      taskYIELD(); ///preemption for higher priority task woken by xQueueReceiveFromISR() 
-    }
+//    NetCom::ProtocolHardwareObjHandler curObj_st{nullptr, 0U};
+//    BaseType_t xHigherPriorityTaskWoken_u16{pdFALSE};
+//    g_transmitLockingFlag_u16 = pdFALSE; //Transmit success, remove lock
+//    UNUSED(xQueueReceiveFromISR(NetCom::g_MCALQueueHandler_st, &curObj_st, &xHigherPriorityTaskWoken_u16)); 
+//    UNUSED(curObj_st);
+//    if(xHigherPriorityTaskWoken_u16 == pdTRUE)
+//    {
+//      taskYIELD(); ///preemption for higher priority task woken by xQueueReceiveFromISR() 
+//    }
   } 
 }
 /**
