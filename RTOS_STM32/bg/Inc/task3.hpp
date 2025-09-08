@@ -8,7 +8,7 @@ namespace Task
   class Task3Handler: public TaskHandler 
   {
     public: 
-      Task3Handler():TaskHandler{convertTickFromMs(10U)}
+      Task3Handler():TaskHandler{convertTickFromMs(500U)}
       { }
 
       explicit Task3Handler(UBaseType_t taskPriority): TaskHandler{convertTickFromMs(10U), taskPriority, "Task-3"}

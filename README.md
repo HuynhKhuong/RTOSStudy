@@ -177,3 +177,11 @@ Task 2: Employee Task
 Manager Task creates ticket Id -> Queue
 Manager Task signal Employee Task
 Employee Task process ticket Id
+
+(Counting Semaphore to synchronise 1 task and multiple events)
+Create 2 tasks: 
+- Handle task
+- Periodic Task
+Periodic Task **Must** be higher prioritized than handler task 
+countine semaphore to process latched events sent by fast triggering interrupts
+

@@ -1,9 +1,18 @@
 #include "task3.hpp"
 #include "menu/MenuRunnable.hpp"
 
+extern "C"
+{
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "semphr.h"
+#include "stm32f4xx_hal.h"
+#include "stm32f407xx.h"
+}
+
 namespace Task
 {
-    Task3Handler task3{2U};  //to define task3 here
+    Task3Handler task3{3U};  //to define task3 here
 
     void Task3Handler::task3Run(void* param)
     {
@@ -13,7 +22,8 @@ namespace Task
         while(1)
         {
             //User code to do here
-            Menu::g_myMenuRunnable_st->run();
+            //Menu::g_myMenuRunnable_st->run();
+            NVIC_SetPendingIRQ(EXTI0_IRQn); //Simulate an external interrupt event for testing purpose
             vTaskDelayUntil(&task3.m_currentWakeTimeTick, task3.m_taskCycleTick);
         }
     }

@@ -3,16 +3,16 @@
 
 namespace Task
 {
-    Task4Handler task4{2U};  //to define task4 here
+    Task4Handler task4{1U};  //to define task4 here
 
     void Task4Handler::task4Run(void* param)
     {
-        task4.m_currentWakeTimeTick = xTaskGetTickCount();
+        ///task4.m_currentWakeTimeTick = xTaskGetTickCount();
         RTC_Handler::g_myRTCRunnable_st->init();
         while(1)
         {
-            RTC_Handler::g_myRTCRunnable_st->run();
-            vTaskDelayUntil(&task4.m_currentWakeTimeTick, task4.m_taskCycleTick);
+            //RTC_Handler::g_myRTCRunnable_st->run();
+            //vTaskDelayUntil(&task4.m_currentWakeTimeTick, task4.m_taskCycleTick);
         }
     }
 

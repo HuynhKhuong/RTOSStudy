@@ -20,6 +20,7 @@
 #include "main.h"
 #include "SEGGER_SYSVIEW_FreeRTOS.h"
 #include "FreeRTOS.h"
+#include "portmacro.h"
 #include "task.h"
 #include "stm32f4xx_hal_uart.h"
 #include "usb_host.h"
@@ -42,6 +43,7 @@
 extern RTC_HandleTypeDef hrtc;
 extern QueueHandle_t g_taskIdQueueCont_ptr;
 extern xSemaphoreHandle g_taskIdSemprSignal_ptr;
+extern xSemaphoreHandle g_interruptLatchedSempr_ptr;
 
 using TaskIdType = uint8_t;
 /* USER CODE END PTD */
@@ -52,10 +54,13 @@ namespace
 {
     constexpr BaseType_t g_taskIdQueueLength_u8{2U};
     constexpr UBaseType_t g_taskIdSize{sizeof(TaskIdType)};
+    constexpr UBaseType_t g_interruptLatchedSemprMaxCount_cu8{10U};
+    constexpr UBaseType_t g_interruptLatchedSemprnitialCount_cu8{0U}; 
 }
 
 QueueHandle_t g_taskIdQueueCont_ptr{nullptr};
 xSemaphoreHandle g_taskIdSemprSignal_ptr{nullptr};
+xSemaphoreHandle g_interruptLatchedSempr_ptr{nullptr};
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -128,6 +133,7 @@ int main(void)
     /* USER CODE BEGIN Init */
     g_taskIdQueueCont_ptr = xQueueCreate(g_taskIdQueueLength_u8, g_taskIdSize);
     g_taskIdSemprSignal_ptr = xSemaphoreCreateBinary();
+    g_interruptLatchedSempr_ptr = xSemaphoreCreateCounting(g_interruptLatchedSemprMaxCount_cu8, g_interruptLatchedSemprnitialCount_cu8);
     /* USER CODE END Init */
 
     /* Configure the system clock */
@@ -157,7 +163,8 @@ int main(void)
     SEGGER_SYSVIEW_Conf();
     SEGGER_SYSVIEW_Start();
 
-    if((g_taskIdQueueCont_ptr != nullptr) && (g_taskIdSemprSignal_ptr != nullptr))
+    if( (g_taskIdQueueCont_ptr != nullptr) && (g_taskIdSemprSignal_ptr != nullptr) &&
+        (g_interruptLatchedSempr_ptr != nullptr))
     {   
         taskCreationResult = Task::createTasks();
         init();       /* init for inter-task communication entities */
@@ -533,15 +540,26 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-  traceISR_ENTER();
-  if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
-  {
-    //global resource, need access block instructions
-    portENTER_CRITICAL();
-    Task::isInputClicked = true; 
-    portEXIT_CRITICAL();
-  }
-  traceISR_EXIT();
+    //traceISR_ENTER();
+    if((GPIO_Pin == B1_Pin) && (taskCreationResult == pdPASS))  
+    {
+        BaseType_t xHigherPriorityTaskWoken_u16{pdFALSE};
+        //global resource, need access block instructions
+        //portENTER_CRITICAL();
+        //Task::isInputClicked = true; 
+        //portEXIT_CRITICAL();
+        xSemaphoreGiveFromISR(g_interruptLatchedSempr_ptr, &xHigherPriorityTaskWoken_u16);
+        xSemaphoreGiveFromISR(g_interruptLatchedSempr_ptr, &xHigherPriorityTaskWoken_u16);
+        xSemaphoreGiveFromISR(g_interruptLatchedSempr_ptr, &xHigherPriorityTaskWoken_u16);
+        xSemaphoreGiveFromISR(g_interruptLatchedSempr_ptr, &xHigherPriorityTaskWoken_u16);
+        xSemaphoreGiveFromISR(g_interruptLatchedSempr_ptr, &xHigherPriorityTaskWoken_u16);
+
+        if(xHigherPriorityTaskWoken_u16 == pdTRUE)
+        {
+            portEND_SWITCHING_ISR(pdTRUE);
+        }
+    }
+    //traceISR_EXIT();
 }
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
